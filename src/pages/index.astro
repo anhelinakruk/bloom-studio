@@ -77,7 +77,8 @@ const featuredClasses = classes.filter(({ id }) =>
         Kameralne studio pod Wrocławiem, w którym ćwiczysz spokojnie, pod okiem instruktorki.
         Przyjdź na pierwsze zajęcia grupowe za darmo, nawet jeśli nigdy wcześniej nie ćwiczyłaś.
       </p>
-      <div class="buttons">
+      {/* While these are on screen, the phone's bottom bar stays hidden (MobileBar.astro) */}
+      <div class="buttons" data-hides-mobile-bar>
         <Button href={studio.bookingUrl}>Zobacz grafik</Button>
         <Button href={link("/zajecia")} variant="outline">Zajęcia i cennik</Button>
       </div>
@@ -358,7 +359,10 @@ const featuredClasses = classes.filter(({ id }) =>
   {/* 12. NEWSLETTER */}
   <section class="panel">
     <div class="container newsletter-wrap">
-      <NewsletterForm />
+      <div class="newsletter-block">
+        <h2 class="newsletter-title">Bądź na bieżąco</h2>
+        <NewsletterForm />
+      </div>
     </div>
   </section>
 </Base>
@@ -458,10 +462,14 @@ const featuredClasses = classes.filter(({ id }) =>
     font-size: clamp(48px, min(7vw, 11svh), 108px);
   }
 
+  /*
+    Phones: the bottom bar slides away while the hero buttons are visible, so
+    the hero fills the whole screen. The bottom padding still clears the bar,
+    for browsers without JavaScript where it stays put.
+  */
   @media (max-width: 760px) {
-    .hero {
-      height: calc(100vh - var(--mobile-bar-height));
-      height: calc(100svh - var(--mobile-bar-height));
+    .hero-content {
+      padding-bottom: calc(var(--mobile-bar-height) + 24px);
     }
   }
 
@@ -988,6 +996,19 @@ const featuredClasses = classes.filter(({ id }) =>
   .newsletter-wrap {
     display: flex;
     justify-content: center;
-    padding-block: clamp(48px, 6vw, 72px);
+    padding-block: var(--space-section);
+  }
+
+  /* Same width as the form, so the heading lines up with its left edge */
+  .newsletter-block {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 520px;
+  }
+
+  .newsletter-title {
+    font-size: clamp(30px, 3.4vw, 42px);
   }
 </style>

@@ -8,6 +8,21 @@ import Button from "./Button.astro";
   <Button href={studio.bookingUrl}>Grafik i zapisy</Button>
 </div>
 
+{/*
+  A page can mark buttons with data-hides-mobile-bar (the home page hero does):
+  while they are on screen the bar slides away, so the first screen doesn't
+  show the same actions twice. Without JavaScript the bar simply stays.
+*/}
+<script>
+  const bar = document.querySelector<HTMLElement>(".bar");
+  const target = document.querySelector("[data-hides-mobile-bar]");
+  if (bar && target) {
+    new IntersectionObserver(([entry]) => {
+      bar.classList.toggle("is-hidden", entry.isIntersecting);
+    }).observe(target);
+  }
+</script>
+
 <style>
   /*
     Grid rather than flex so the two buttons stretch to their columns without
@@ -23,5 +38,10 @@ import Button from "./Button.astro";
     padding: 10px 16px;
     background: var(--color-bg);
     border-top: 1px solid var(--color-border-strong);
+    transition: transform 0.3s ease;
+  }
+
+  .bar.is-hidden {
+    transform: translateY(100%);
   }
 </style>
