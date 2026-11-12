@@ -1,0 +1,41 @@
+---
+import { Image } from "astro:assets";
+
+/**
+ * A real photo filling a slot the parent has sized — the same contract as
+ * PhotoPlaceholder, so one can be swapped for the other without touching
+ * layout. Astro resizes and re-encodes at build time and emits a srcset.
+ *
+ * The fill rules live in global.css as `.photo-fill`: scoped styles never
+ * reach a child component's element, and <Image> is a component.
+ */
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  /** How wide the slot renders, so the browser picks the right file. */
+  sizes: string;
+  /** object-position, for crops that need steering (e.g. "70% 40%"). */
+  position?: string;
+  widths?: number[];
+  loading?: "lazy" | "eager";
+}
+
+const {
+  src,
+  alt,
+  sizes,
+  position,
+  widths = [480, 768, 1200, 1800],
+  loading = "lazy",
+} = Astro.props;
+---
+
+<Image
+  src={src}
+  alt={alt}
+  widths={widths}
+  sizes={sizes}
+  loading={loading}
+  class="photo-fill"
+  style={position ? `object-position: ${position}` : undefined}
+/>

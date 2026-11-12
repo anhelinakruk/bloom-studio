@@ -1,0 +1,187 @@
+---
+import Base from "../layouts/Base.astro";
+import Button from "../components/Button.astro";
+import EventCard from "../components/EventCard.astro";
+import NewsCard from "../components/NewsCard.astro";
+import NewsletterForm from "../components/NewsletterForm.astro";
+import { news, pastEvents, type EventDate, type NewsItem } from "../data/news";
+import { studio } from "../data/studio";
+
+const upcoming = news.find(
+  (item): item is NewsItem & { date: EventDate } => Boolean(item.upcoming && item.date),
+);
+const others = news.filter((item) => item !== upcoming);
+---
+
+<Base
+  title="Aktualności – Bloom Studio by Dayana"
+  description="Wydarzenia, nowe zajęcia i wyjazdy w Bloom Studio by Dayana w Szewcach."
+>
+  <section class="page-head">
+    <h1>Aktualności</h1>
+    <p class="muted lead">Wydarzenia, nowe zajęcia i wyjazdy w Bloom.</p>
+  </section>
+
+  {
+    upcoming && (
+      <section id="najblizsze-wydarzenie" class="container block">
+        <h2 class="block-title">Najbliższe wydarzenie</h2>
+        <EventCard item={upcoming} />
+      </section>
+    )
+  }
+
+  {
+    others.length > 0 && (
+      <section class="container block">
+        <h2 class="block-title">Nowe w&nbsp;studiu</h2>
+        {others.map((item) => (
+          <NewsCard item={item} />
+        ))}
+      </section>
+    )
+  }
+
+  {/* A timeline with the same large-date motif as the event card, no photos */}
+  <section class="panel">
+    <div class="container past">
+      <h2 class="block-title">Poprzednie wydarzenia</h2>
+      <ol class="timeline">
+        {
+          pastEvents.map((event) => (
+            <li class="past-row">
+              <div class="past-date">
+                <span class="past-day">{event.day}</span>
+                <span class="past-month">{event.month}</span>
+              </div>
+              <div class="past-body">
+                <h3 class="past-name">{event.title}</h3>
+                <p class="subtle">{event.detail}</p>
+                <p class="strong-text">{event.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="container stay">
+    <div class="stay-text">
+      <h2 class="block-title">Bądź na bieżąco</h2>
+      <p class="muted">
+        Nowe wydarzenia i zajęcia ogłaszamy mailem i na Instagramie. Zapisz się, żeby nie
+        przegapić następnego.
+      </p>
+      <div>
+        <Button href={studio.instagram.url} variant="light">{studio.instagram.handle}</Button>
+      </div>
+    </div>
+    <div class="stay-form">
+      <NewsletterForm />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .block {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    padding-bottom: var(--space-section);
+  }
+
+  .block-title {
+    font-size: clamp(30px, 3.4vw, 42px);
+  }
+
+  /* --- Poprzednie wydarzenia --- */
+  .past {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    padding-block: var(--space-section);
+  }
+
+  .timeline {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .past-row {
+    display: flex;
+    gap: 36px;
+    padding-block: 28px;
+    border-top: 1px solid var(--color-border-strong);
+  }
+
+  .past-row:last-child {
+    border-bottom: 1px solid var(--color-border-strong);
+  }
+
+  .past-date {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    width: 130px;
+  }
+
+  .past-day {
+    font-family: var(--font-heading);
+    font-size: 44px;
+    line-height: 1;
+    color: var(--color-accent);
+    white-space: nowrap;
+  }
+
+  .past-month {
+    margin-top: 6px;
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  .past-body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-width: 640px;
+  }
+
+  .past-name {
+    font-size: 26px;
+  }
+
+  /* --- Bądź na bieżąco --- */
+  .stay {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 40px 72px;
+    padding-block: var(--space-section);
+  }
+
+  .stay-text {
+    display: flex;
+    flex: 1 1 340px;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 480px;
+  }
+
+  .stay-form {
+    display: flex;
+    flex: 1 1 420px;
+    justify-content: center;
+    padding: clamp(24px, 4vw, 40px);
+    background: var(--color-card);
+    border-radius: var(--radius-card);
+  }
+
+  @media (max-width: 560px) {
+    .past-row {
+      flex-direction: column;
+      gap: 12px;
+    }
+  }
+</style>

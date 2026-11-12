@@ -1,0 +1,179 @@
+---
+import Base from "../layouts/Base.astro";
+import { studio } from "../data/studio";
+
+/*
+  Draft privacy policy (step 7 of the plan), built only from facts we have.
+  Anything unknown is marked [DO UZUPEŁNIENIA]. Dayana approves the final
+  text, ideally after someone who knows GDPR has read it.
+*/
+const { foundation } = studio;
+---
+
+<Base
+  title="Polityka prywatności – Bloom Studio by Dayana"
+  description="Jak Fundacja Bloom Studio by Dayana przetwarza dane osobowe: formularz pytań, newsletter, zapisy na zajęcia i Twoje prawa."
+>
+  <section class="page-head">
+    <h1>Polityka prywatności</h1>
+    <p class="muted lead">
+      Kto przetwarza Twoje dane, jakie i po co, oraz jakie masz prawa.
+    </p>
+    <p class="subtle">
+      [SZKIC: treść do zatwierdzenia przez fundację przed publikacją] · Obowiązuje od
+      [DO UZUPEŁNIENIA]
+    </p>
+  </section>
+
+  <article class="container policy">
+    <section>
+      <h2>Kto jest administratorem danych</h2>
+      <p>
+        Administratorem Twoich danych osobowych jest {foundation.name}, {foundation.address},
+        KRS {foundation.krs}, REGON {foundation.regon}, NIP {foundation.nip ?? "[DO UZUPEŁNIENIA]"}.
+        Fundacja prowadzi Bloom Studio by Dayana w Szewcach.
+      </p>
+      <p>
+        W sprawach danych osobowych napisz na <a href={studio.emailHref}>{studio.email}</a> albo
+        zadzwoń: <a href={studio.phoneHref}>{studio.phone}</a>.
+      </p>
+    </section>
+
+    <section>
+      <h2>Jakie dane zbieramy i&nbsp;po co</h2>
+
+      <h3>Pytania z&nbsp;formularza na stronie Kontakt</h3>
+      <p>
+        Imię, adres e-mail, numer telefonu (jeśli go podasz) i treść pytania. Używamy ich, żeby
+        odpowiedzieć na Twoje pytanie. Podstawą jest nasz prawnie uzasadniony interes, czyli
+        odpowiedź na Twoją wiadomość (art. 6 ust. 1 lit. f RODO). Wiadomość trafia do nas
+        mailem przez usługę Web3Forms.
+      </p>
+
+      <h3>Newsletter</h3>
+      <p>
+        Adres e-mail. Wysyłamy na niego informacje o nowych zajęciach, wydarzeniach i
+        wyjazdach. Podstawą jest Twoja zgoda (art. 6 ust. 1 lit. a RODO), którą potwierdzasz,
+        klikając link w pierwszym mailu. Zgodę możesz wycofać w każdej chwili, klikając link
+        „wypisz się” w każdym newsletterze albo pisząc do nas. Newsletter wysyłamy przez
+        usługę MailerLite.
+      </p>
+
+      <h3>Zapisy na zajęcia</h3>
+      <p>
+        Zapisy prowadzimy w aplikacji z grafikiem ({studio.bookingUrl.replace("https://", "").replace(/\/$/, "")}).
+        Podajesz w niej [DO UZUPEŁNIENIA: potwierdzić zakres, np. imię i nazwisko, telefon,
+        e-mail, przy zapisie dziecka także imię i wiek dziecka]. Używamy tych danych, żeby
+        zapisać Cię na zajęcia i skontaktować się w ich sprawie. Podstawą jest umowa, czyli
+        udział w zajęciach (art. 6 ust. 1 lit. b RODO).
+      </p>
+
+      <h3>Telefon, SMS, e-mail i&nbsp;Instagram</h3>
+      <p>
+        Jeśli piszesz albo dzwonisz do nas bezpośrednio, przetwarzamy dane, które sama
+        podasz, żeby odpowiedzieć. Podstawą jest nasz prawnie uzasadniony interes (art. 6
+        ust. 1 lit. f RODO).
+      </p>
+    </section>
+
+    <section>
+      <h2>Komu przekazujemy dane</h2>
+      <p>Dane przechowują dla nas firmy, które świadczą nam usługi:</p>
+      <ul>
+        <li>Web3Forms: przesyłanie pytań z formularza na stronie Kontakt,</li>
+        <li>MailerLite: wysyłka newslettera,</li>
+        <li>Lovable: aplikacja z grafikiem i zapisami,</li>
+        <li>[DO UZUPEŁNIENIA: firma, na której serwerach działa strona].</li>
+      </ul>
+      <p>
+        [DO UZUPEŁNIENIA: sprawdzić, czy któraś z tych firm przetwarza dane poza Europejskim
+        Obszarem Gospodarczym, i jeśli tak, na jakiej podstawie.] Nie sprzedajemy danych i
+        nie przekazujemy ich nikomu w celach reklamowych.
+      </p>
+    </section>
+
+    <section>
+      <h2>Jak długo przechowujemy dane</h2>
+      <ul>
+        <li>Pytania: [DO UZUPEŁNIENIA: np. rok od zakończenia korespondencji].</li>
+        <li>Newsletter: do czasu wycofania zgody.</li>
+        <li>Zapisy na zajęcia: [DO UZUPEŁNIENIA].</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Twoje prawa</h2>
+      <p>Masz prawo:</p>
+      <ul>
+        <li>dostępu do swoich danych i otrzymania ich kopii,</li>
+        <li>sprostowania danych,</li>
+        <li>usunięcia danych,</li>
+        <li>ograniczenia przetwarzania,</li>
+        <li>przeniesienia danych,</li>
+        <li>sprzeciwu wobec przetwarzania opartego na prawnie uzasadnionym interesie,</li>
+        <li>wycofania zgody w każdej chwili, bez wpływu na to, co zrobiliśmy przed jej wycofaniem.</li>
+      </ul>
+      <p>
+        Żeby skorzystać z tych praw, napisz na <a href={studio.emailHref}>{studio.email}</a>.
+        Możesz też złożyć skargę do Prezesa Urzędu Ochrony Danych Osobowych (ul. Stawki 2,
+        00-193 Warszawa).
+      </p>
+    </section>
+
+    <section>
+      <h2>Pliki cookies i&nbsp;usługi zewnętrzne na stronie</h2>
+      <p>
+        Nasza strona sama nie zapisuje plików cookies i nie używa narzędzi analitycznych ani
+        reklamowych. Czcionki wczytujemy z Google Fonts, więc przy otwarciu strony Twoja
+        przeglądarka łączy się z serwerami Google, które widzą jej adres IP. Mapy na stronie
+        głównej i na stronie Kontakt pochodzą z OpenStreetMap: przy ich wczytaniu przeglądarka łączy się z serwerami
+        OpenStreetMap, które również widzą adres IP, ale mapa nie zapisuje plików cookies.
+        Kliknięcie w mapę otwiera Mapy Google, gdzie obowiązują zasady prywatności Google.
+      </p>
+    </section>
+  </article>
+</Base>
+
+<style>
+  .policy {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+    max-width: 760px;
+    padding-bottom: var(--space-section);
+  }
+
+  .policy section {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .policy h2 {
+    font-size: clamp(28px, 3vw, 36px);
+  }
+
+  .policy h3 {
+    margin-top: 10px;
+    font-size: 22px;
+  }
+
+  /* break-word: the e-mail and app addresses are longer than a small phone's line */
+  .policy p,
+  .policy li {
+    color: var(--color-text-strong);
+    overflow-wrap: break-word;
+  }
+
+  .policy ul {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0;
+    padding-left: 20px;
+  }
+
+  .policy li::marker {
+    color: var(--color-accent);
+  }
+</style>

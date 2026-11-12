@@ -1,0 +1,992 @@
+---
+import Base from "../layouts/Base.astro";
+import Button from "../components/Button.astro";
+import ClassCard from "../components/ClassCard.astro";
+import Photo from "../components/Photo.astro";
+import StudioMap from "../components/StudioMap.astro";
+import { studio } from "../data/studio";
+import { classes, pregnancyPilates } from "../data/classes";
+import { faq } from "../data/faq";
+import { reviews } from "../data/reviews";
+import { news, type EventDate, type NewsItem } from "../data/news";
+import EventCard from "../components/EventCard.astro";
+import NewsletterForm from "../components/NewsletterForm.astro";
+
+// All of these are 1206px wide exports. Enough for the portraits, tight for a
+// full-bleed hero on a large monitor — full-resolution originals are on the
+// list of things to ask Dayana for.
+import heroPhoto from "../images/zajecia-na-reformerze.jpg";
+import reformerPhoto from "../images/dayana-poprawia-ustawienie.jpg";
+import dayanaPhoto from "../images/dayana-portret.jpg";
+import basiaPhoto from "../images/basia-portret.jpg";
+
+const { address, foundation } = studio;
+const upcoming = news.find(
+  (item): item is NewsItem & { date: EventDate } => Boolean(item.upcoming && item.date),
+);
+
+const facts = [
+  { value: "6", label: "osób, nie więcej, na zajęciach w grupie" },
+  { value: "2", label: "reformery do zajęć indywidualnych lub w duecie" },
+  { value: "0 zł", label: "za pierwsze zajęcia grupowe, także dla dzieci" },
+];
+
+const steps = [
+  {
+    title: "Wybierz zajęcia",
+    text: "W grafiku online znajdziesz zajęcia grupowe i liczbę wolnych miejsc.",
+  },
+  {
+    title: "Wyślij zgłoszenie",
+    text: "Podajesz imię, telefon i e-mail. Potwierdzimy Twoje miejsce.",
+  },
+  {
+    title: "Przyjdź na zajęcia",
+    text: "Pierwsze zajęcia grupowe są bezpłatne. Weź wygodny strój, maty i sprzęt czekają na miejscu.",
+  },
+];
+
+// The main offer shares one grid, with the same styling for all classes.
+const featuredClasses = classes.filter(({ id }) =>
+  id === "pilates-na-macie" || id === "barre" || id === "reformer"
+);
+---
+
+<Base
+  overlayHeader
+  title="Bloom Studio by Dayana – pilates i barre w Szewcach"
+  description="Kameralne studio pilatesu i barre w Szewcach pod Wrocławiem. Małe grupy, najwyżej sześć osób. Pierwsze zajęcia grupowe są bezpłatne."
+>
+  {/* 1. HERO */}
+  <section class="hero" aria-label="Bloom Studio, pilates i barre w Szewcach">
+    <div class="hero-media">
+      <Photo
+        src={heroPhoto}
+        alt="Instruktorka poprawia ustawienie osoby ćwiczącej na reformerze. W tle zielona ściana z drewnianym logo Bloom Studio."
+        sizes="100vw"
+        widths={[640, 960, 1206]}
+        position="50% 35%"
+        loading="eager"
+      />
+    </div>
+    <div aria-hidden="true" class="hero-shade"></div>
+    <div class="container hero-content">
+      <h1>Pilates i&nbsp;barre w&nbsp;Szewcach</h1>
+      <p class="hero-lead">
+        Kameralne studio pod Wrocławiem, w którym ćwiczysz spokojnie, pod okiem instruktorki.
+        Przyjdź na pierwsze zajęcia grupowe za darmo, nawet jeśli nigdy wcześniej nie ćwiczyłaś.
+      </p>
+      <div class="buttons">
+        <Button href={studio.bookingUrl}>Zobacz grafik</Button>
+        <Button href="/zajecia" variant="outline">Zajęcia i cennik</Button>
+      </div>
+    </div>
+  </section>
+
+  {/* 2. KRÓTKO O STUDIU */}
+  <section class="intro">
+    <h2>Poznaj Bloom</h2>
+    <p class="intro-text">
+      Bloom to kameralne studio w Szewcach pod Wrocławiem. Na macie i przy drążku ćwiczymy
+      w małych grupach, dzięki czemu mamy czas, żeby wyjaśnić Ci ćwiczenia i pomóc w ich
+      wykonaniu. Na reformerze prowadzimy zajęcia indywidualne lub w duecie.
+    </p>
+  </section>
+
+  <section class="facts-wrap">
+    <div class="facts">
+      {
+        facts.map((fact) => (
+          <div class="fact">
+            <span class="fact-value">{fact.value}</span>
+            <span class="fact-label">{fact.label}</span>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  {/* 3. JAK ZACZĄĆ */}
+  <section class="panel">
+    <div class="container steps-inner">
+      <div class="section-head">
+        <h2>Jak zacząć</h2>
+        <p class="muted">
+          Od grafiku do pierwszych zajęć w trzech krokach.
+        </p>
+      </div>
+      <div class="steps">
+        {
+          steps.map((step, index) => (
+            <div class="step">
+              <span class="step-number">{index + 1}</span>
+              <h3>{step.title}</h3>
+              <p class="muted">{step.text}</p>
+            </div>
+          ))
+        }
+      </div>
+      <div>
+        <Button href={studio.bookingUrl}>Otwórz grafik</Button>
+      </div>
+    </div>
+  </section>
+
+  {/* 4. ZAJĘCIA */}
+  <section id="zajecia" class="container classes">
+    <div class="section-head">
+      <h2>Zajęcia w&nbsp;Bloom</h2>
+      <p class="muted">
+        Pilates na macie, barre czy reformer? Zobacz, na czym polegają zajęcia, i wybierz coś dla siebie.
+      </p>
+    </div>
+
+    <div class="class-grid">
+      {featuredClasses.map((item) => <ClassCard item={item} />)}
+    </div>
+
+    <div>
+      <Button href="/zajecia" variant="light">Wszystkie zajęcia i cennik</Button>
+    </div>
+  </section>
+
+  <section class="container pregnancy-section" aria-label="Pilates dla kobiet w ciąży">
+    <article class="pregnancy-offer" aria-labelledby="pregnancy-title">
+      <div class="pregnancy-text">
+        <span class="offer-tag">Nowość</span>
+        <h3 id="pregnancy-title">{pregnancyPilates.name}</h3>
+        <p class="strong-text">{pregnancyPilates.text}</p>
+      </div>
+      <div>
+        <Button href={`/zajecia#${pregnancyPilates.id}`}>O zajęciach</Button>
+      </div>
+    </article>
+  </section>
+
+  {/* 5. DLA RODZICÓW */}
+  <section class="split panel">
+    {/*
+      No photo of the children's classes exists yet and those need written
+      parental consent, so this slot shows the other half of the offer: the
+      parent on the reformer while the child dances.
+    */}
+    <div class="split-photo">
+      <Photo
+        src={reformerPhoto}
+        alt="Instruktorka klęczy przy reformerze i poprawia ułożenie stopy ćwiczącej."
+        sizes="(max-width: 760px) 100vw, 50vw"
+        position="55% 50%"
+      />
+    </div>
+    <div class="split-text">
+      <h2>Dziecko tańczy, Ty ćwiczysz</h2>
+      <p class="strong-text">
+        Kiedy Twoje dziecko jest na tańcu, możesz wykorzystać ten czas na własne zajęcia na reformerze.
+      </p>
+      <div class="buttons">
+        <Button href={studio.bookingUrl}>Zapisz dziecko</Button>
+      </div>
+    </div>
+  </section>
+
+  {/* 6. DAYANA I BASIA */}
+  <section id="instruktorki" class="container teachers">
+    <div class="teachers-head">
+      <h2 class="teachers-title">Dayana <em>i</em> Basia</h2>
+    </div>
+
+    <div class="teachers-grid">
+      <article class="teacher">
+        <div class="teacher-photo">
+          <Photo
+            src={dayanaPhoto}
+            alt="Dayana Radzimowska na tle zielonej ściany z logo Bloom Studio."
+            sizes="(max-width: 760px) 100vw, 45vw"
+          />
+        </div>
+        <div class="teacher-name">
+          <h3 class="teacher-heading">Dayana Radzimowska</h3>
+          <span class="teacher-role">
+            założycielka studia · pilates na macie i reformerze, barre, high heels, taniec
+            10–13 lat
+          </span>
+        </div>
+        <p>
+          Taniec jest ze mną od dzieciństwa. Bloom założyłam z myślą o
+          kobietach, żeby miały miejsce, w którym zadbają o ciało i o ducha.
+        </p>
+      </article>
+
+      <article class="teacher">
+        <div class="teacher-photo">
+          <Photo
+            src={basiaPhoto}
+            alt="Barbara Witkowska na tle zielonej ściany z logo Bloom Studio."
+            sizes="(max-width: 760px) 100vw, 45vw"
+          />
+        </div>
+        <div class="teacher-name">
+          <h3 class="teacher-heading">Barbara Witkowska</h3>
+          <span class="teacher-role">
+            instruktorka · pilates, stretching, Trening Spokojnego Umysłu, taniec 6–8 lat
+          </span>
+        </div>
+        <p>
+          Zaczynałam od tańca i do dziś tańczę high heels. Pilates pokochałam, kiedy
+          szukałam ruchu, który łączy pracę z ciałem ze skupieniem.
+        </p>
+      </article>
+    </div>
+    <div>
+      <a class="bold-link" href="/instruktorki">Więcej o instruktorkach</a>
+    </div>
+  </section>
+
+  {/*
+    7. OPINIE: a row of cards that scrolls sideways. Swipe on a phone; the
+    arrows scroll by one card. The arrows need JavaScript, the scrolling
+    itself doesn't.
+  */}
+  <section class="panel reviews">
+    <div class="container reviews-head">
+      <h2>Opinie z&nbsp;Google</h2>
+      <div class="reviews-nav">
+        <button type="button" class="arrow" data-dir="-1" aria-label="Poprzednie opinie">
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"></path></svg>
+        </button>
+        <button type="button" class="arrow" data-dir="1" aria-label="Następne opinie">
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>
+        </button>
+      </div>
+    </div>
+
+    <ul class="reviews-track" tabindex="0" aria-label="Opinie z Google, przewijane w bok">
+      {
+        reviews.map((review) => (
+          <li class="review-card">
+            {/* Author on top: cards share the longest one's height, so the spare room falls at the bottom */}
+            <div class="review-meta">
+              <span class="stars" role="img" aria-label="Ocena 5 na 5">
+                ★★★★★
+              </span>
+              <span class="review-author">{review.author}</span>
+            </div>
+            <blockquote class="review-quote">„{review.text}”</blockquote>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="container reviews-more">
+      <a class="bold-link" href={studio.googleProfileUrl}>Zobacz wszystkie opinie w Google</a>
+    </div>
+  </section>
+
+  {/* 8. WYDARZENIE: the news item marked `upcoming`; hidden when there is none */}
+  {
+    upcoming && (
+      <section class="container event">
+        <h2>Najbliższe wydarzenie</h2>
+        <EventCard item={upcoming} preview />
+      </section>
+    )
+  }
+
+  {/* 9. FUNDACJA */}
+  <section class="foundation">
+    <h2 class="foundation-title">Fundacja i&nbsp;klub sportowy</h2>
+    <p class="muted">
+      Studio prowadzi {foundation.name}, a Bloom działa jako klub sportowy. Chcemy zachęcać
+      dzieci, młodzież i dorosłych do ruchu na zajęciach, warsztatach i wspólnych wyjazdach.
+    </p>
+    <a class="bold-link" href="/fundacja">Więcej o fundacji</a>
+  </section>
+
+  {/* 10. PYTANIA */}
+  <section class="faq-wrap">
+    <div class="container faq">
+      <div class="faq-head">
+        <h2>FAQ</h2>
+        <p class="muted">
+          Odpowiedzi na najczęstsze pytania o zajęcia i zapisy.
+        </p>
+      </div>
+      <div class="faq-list">
+        {
+          faq.map((item, index) => (
+            <details class="faq-item" open={index === 0}>
+              <summary class="faq-question">
+                {item.question}
+                <span aria-hidden="true" class="faq-toggle"></span>
+              </summary>
+              <p class="faq-answer">{item.answer}</p>
+            </details>
+          ))
+        }
+      </div>
+      <div class="faq-contact">
+        <h3>Masz inne pytanie?</h3>
+        <Button href="/kontakt#pytanie" variant="light">Zadaj pytanie</Button>
+      </div>
+    </div>
+  </section>
+
+  {/* 11. KONTAKT I DOJAZD */}
+  <section id="kontakt" class="container contact">
+    <div class="contact-text">
+      <h2>Lokalizacja</h2>
+      <p>
+        {address.street}, {address.town} ({address.municipality}).<br />
+        {address.directions}
+      </p>
+      <p class="subtle">Parking: {address.parking}</p>
+      <div class="contact-details">
+        <a class="phone-link" href={studio.phoneHref}>{studio.phone}</a>
+        <span class="subtle">telefon i SMS</span>
+        <a href={studio.emailHref}>{studio.email}</a>
+      </div>
+      <div class="buttons">
+        <Button href={address.mapsHref}>Wyznacz trasę</Button>
+      </div>
+    </div>
+    <div class="contact-map">
+      <StudioMap />
+    </div>
+  </section>
+
+  {/* 12. NEWSLETTER */}
+  <section class="panel">
+    <div class="container newsletter-wrap">
+      <NewsletterForm />
+    </div>
+  </section>
+</Base>
+
+<script>
+  const track = document.querySelector<HTMLElement>(".reviews-track");
+  const prev = document.querySelector<HTMLButtonElement>('.arrow[data-dir="-1"]');
+  const next = document.querySelector<HTMLButtonElement>('.arrow[data-dir="1"]');
+
+  if (track && prev && next) {
+    const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+
+    // One card plus the gap, so each click lands on the next card's edge
+    const step = () => {
+      const card = track.querySelector("li");
+      const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+      return card ? card.offsetWidth + gap : track.clientWidth;
+    };
+
+    for (const arrow of [prev, next]) {
+      arrow.addEventListener("click", () => {
+        track.scrollBy({
+          left: Number(arrow.dataset.dir) * step(),
+          behavior: reducedMotion.matches ? "auto" : "smooth",
+        });
+      });
+    }
+
+    const update = () => {
+      prev.disabled = track.scrollLeft <= 1;
+      next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 1;
+    };
+    track.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    update();
+  }
+</script>
+
+<style>
+  .bold-link {
+    font-weight: 700;
+  }
+
+  /* --- 1. Hero --- */
+  /*
+    The hero fills exactly the first screen (on phones, above the sticky
+    bottom bar). It slides up under the header, which lies transparent on top
+    of it. svh ignores the phone browser's collapsing address bar; the vh line
+    is for browsers without it.
+  */
+  .hero {
+    position: relative;
+    height: 100vh;
+    height: 100svh;
+    min-height: 460px;
+    margin-top: calc(-1 * var(--header-height));
+    overflow: hidden;
+    background: var(--color-hero);
+    color: #fff;
+  }
+
+  .hero-media {
+    position: absolute;
+    inset: 0;
+  }
+
+  /*
+    Dark at the bottom for the headline, and a soft band at the top so the
+    white menu stays readable over the bright ceiling and string lights.
+  */
+  .hero-shade {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to bottom, rgb(20 18 15 / 55%) 0, rgb(20 18 15 / 0%) 200px),
+      linear-gradient(
+        to top,
+        rgb(20 18 15 / 75%) 0%,
+        rgb(20 18 15 / 40%) 45%,
+        rgb(20 18 15 / 5%) 85%
+      );
+  }
+
+  .hero-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 22px;
+    height: 100%;
+    padding-bottom: clamp(40px, 5vw, 80px);
+  }
+
+  /* Shrinks on short screens too, not only narrow ones, so it all fits */
+  .hero h1 {
+    max-width: 900px;
+    font-size: clamp(48px, min(7vw, 11svh), 108px);
+  }
+
+  @media (max-width: 760px) {
+    .hero {
+      height: calc(100vh - var(--mobile-bar-height));
+      height: calc(100svh - var(--mobile-bar-height));
+    }
+  }
+
+  .hero-lead {
+    max-width: 560px;
+    font-size: 19px;
+    color: var(--color-text-light);
+  }
+
+  /* --- 2. Krótko o studiu --- */
+  .intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    max-width: var(--width-text);
+    margin-inline: auto;
+    padding: var(--space-section) var(--space-inline) clamp(48px, 6vw, 72px);
+    text-align: center;
+  }
+
+  .intro-text {
+    max-width: 680px;
+    color: var(--color-text-muted);
+    font-size: 18px;
+  }
+
+  .facts-wrap {
+    max-width: 1100px;
+    margin-inline: auto;
+    padding: 0 var(--space-inline) var(--space-section);
+  }
+
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+    gap: 16px;
+  }
+
+  .fact {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 28px;
+    background: var(--color-card);
+    border-radius: var(--radius-card);
+    text-align: center;
+  }
+
+  .fact-value {
+    font-family: var(--font-heading);
+    font-size: 56px;
+    line-height: 1;
+    color: var(--color-accent);
+  }
+
+  .fact-label {
+    color: var(--color-text-muted);
+    text-wrap: balance;
+  }
+
+  /* --- 3. Jak zacząć --- */
+  .steps-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+    padding-block: clamp(72px, 9vw, 112px);
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+    gap: 16px;
+  }
+
+  .step {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 28px;
+    background: var(--color-card);
+    border-radius: var(--radius-card);
+  }
+
+  .step-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: var(--color-accent);
+    border-radius: var(--radius-pill);
+    color: #fff;
+    font-weight: 700;
+  }
+
+  .step h3 {
+    margin-top: 6px;
+    font-size: 26px;
+  }
+
+  /* --- 4. Zajęcia --- */
+  .classes {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+    padding-block: var(--space-section) 36px;
+  }
+
+  .class-grid {
+    display: grid;
+    /* The three classes share the available width. */
+    grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+    gap: 16px;
+  }
+
+  .pregnancy-section {
+    padding-bottom: var(--space-section);
+  }
+
+  .pregnancy-offer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 24px 40px;
+    padding: clamp(24px, 4vw, 40px);
+    border-radius: var(--radius-card);
+    background: var(--color-panel-green);
+  }
+
+  .offer-tag {
+    align-self: flex-start;
+    padding: 4px 14px;
+    border-radius: var(--radius-pill);
+    background: var(--color-card);
+    color: var(--color-accent);
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .pregnancy-text {
+    display: flex;
+    flex: 1 1 420px;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+  }
+
+  /* --- 5. Dla rodziców --- */
+  .split {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .split-photo {
+    position: relative;
+    flex: 1 1 480px;
+    min-height: 460px;
+  }
+
+  /*
+    Taken out of the flow so the tall portrait photo fills the space next to
+    the text instead of setting the section's height itself.
+  */
+  .split-photo :global(.photo-fill) {
+    position: absolute;
+    inset: 0;
+  }
+
+  .split-text {
+    display: flex;
+    flex: 1 1 480px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 18px;
+    padding: clamp(48px, 6vw, 96px) clamp(24px, 6vw, 96px);
+  }
+
+  /* --- 6. Dayana i Basia --- */
+  .teachers {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+    padding-block: clamp(72px, 9vw, 128px);
+  }
+
+  .teachers-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px 48px;
+  }
+
+  .teachers-title {
+    font-size: clamp(40px, 5vw, 68px);
+    line-height: 1;
+  }
+
+  .teachers-grid {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 56px 64px;
+  }
+
+  /*
+    Two equal columns, same photo size, side by side down to a portrait
+    tablet. Client's decision of 11.11.2026, replacing the earlier
+    "Dayana wider, Basia lower" layout.
+  */
+  .teacher {
+    display: flex;
+    flex: 1 1 300px;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 0;
+  }
+
+  .teacher-photo {
+    aspect-ratio: 4 / 5;
+    max-height: 620px;
+    overflow: hidden;
+    border-radius: var(--radius-card);
+  }
+
+  .teacher-name {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .teacher-heading {
+    font-size: 34px;
+    line-height: 1.1;
+  }
+
+  .teacher-role {
+    font-size: 15px;
+    color: var(--color-text-subtle);
+  }
+
+  /* --- 7. Opinie --- */
+  .reviews {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding-block: var(--space-section);
+  }
+
+  .reviews-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .reviews-nav {
+    display: flex;
+    gap: 10px;
+  }
+
+  .arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--touch-target);
+    height: var(--touch-target);
+    background: transparent;
+    border: 1px solid var(--color-text);
+    border-radius: var(--radius-pill);
+    color: var(--color-text);
+    cursor: pointer;
+    transition:
+      background-color 0.25s ease,
+      color 0.25s ease,
+      opacity 0.25s ease;
+  }
+
+  .arrow:hover:not(:disabled) {
+    background: var(--color-text);
+    color: var(--color-bg);
+  }
+
+  .arrow:disabled {
+    cursor: default;
+    opacity: 0.3;
+  }
+
+  /*
+    Full-bleed track whose first card lines up with the page container.
+    The side padding is the container's margin plus its own padding.
+  */
+  .reviews-track {
+    --edge: max(var(--space-inline), calc((100% - var(--width-page)) / 2 + var(--space-inline)));
+    display: grid;
+    grid-auto-columns: min(85%, 440px);
+    grid-auto-flow: column;
+    gap: 16px;
+    margin: 0;
+    padding: 4px var(--edge) 16px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-padding-inline: var(--edge);
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    list-style: none;
+  }
+
+  .reviews-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .review-card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 28px;
+    background: var(--color-card);
+    border-radius: var(--radius-card);
+    scroll-snap-align: start;
+  }
+
+  .review-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 4px 16px;
+  }
+
+  .stars {
+    color: var(--color-accent);
+    font-size: 16px;
+    letter-spacing: 3px;
+  }
+
+  .review-quote {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-size: 19px;
+    line-height: 1.45;
+  }
+
+  .review-author {
+    font-size: 15px;
+    color: var(--color-text-subtle);
+  }
+
+  /*
+    Phones swipe, so the arrows would only take up room. Cards keep the
+    longest one's height: a shorter card with its own height would leave an
+    empty band of beige under it.
+  */
+  @media (max-width: 760px) {
+    .reviews-nav {
+      display: none;
+    }
+
+    .review-quote {
+      font-size: 17px;
+    }
+  }
+
+  /* --- 8. Wydarzenie --- */
+  .event {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+    padding-block: var(--space-section) 0;
+  }
+
+  /* --- 9. Fundacja --- */
+  .foundation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    max-width: 860px;
+    margin-inline: auto;
+    padding: var(--space-section) var(--space-inline);
+    text-align: center;
+  }
+
+  .foundation-title {
+    font-size: clamp(30px, 3.4vw, 42px);
+    line-height: 1.2;
+  }
+
+  /* --- 10. Pytania --- */
+  .faq-wrap {
+    background: var(--color-card);
+    border-block: 1px solid var(--color-border);
+  }
+
+  .faq {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+    align-items: start;
+    gap: 32px 72px;
+    padding-block: clamp(72px, 9vw, 112px);
+  }
+
+  .faq-head {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 400px;
+  }
+
+  .faq-list {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .faq-contact {
+    grid-column: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    max-width: 400px;
+    padding-top: 24px;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .faq-contact h3 {
+    font-size: 26px;
+  }
+
+  .faq-item {
+    padding-block: 18px;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .faq-item:last-child {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .faq-question {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .faq-toggle {
+    flex-shrink: 0;
+    color: var(--color-accent);
+  }
+
+  .faq-toggle::before {
+    content: "+";
+  }
+
+  .faq-item[open] .faq-toggle::before {
+    content: "−";
+  }
+
+  .faq-answer {
+    margin-top: 10px;
+    color: var(--color-text-strong);
+  }
+
+  @media (max-width: 840px) {
+    .faq {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .faq-list {
+      grid-column: 1;
+      grid-row: auto;
+    }
+
+    .faq-contact {
+      max-width: none;
+      padding-top: 0;
+      border-top: 0;
+    }
+  }
+
+  /* --- 11. Kontakt --- */
+  .contact {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 40px 72px;
+    padding-block: var(--space-section);
+  }
+
+  .contact-text {
+    display: flex;
+    flex: 1 1 380px;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 480px;
+  }
+
+  .contact-details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 6px;
+  }
+
+  .phone-link {
+    font-size: 20px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .contact-map {
+    display: grid;
+    flex: 1 1 460px;
+    min-height: 380px;
+  }
+
+  /* --- 12. Newsletter --- */
+  .newsletter-wrap {
+    display: flex;
+    justify-content: center;
+    padding-block: clamp(48px, 6vw, 72px);
+  }
+</style>

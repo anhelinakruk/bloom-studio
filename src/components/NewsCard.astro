@@ -1,0 +1,94 @@
+---
+import type { NewsItem } from "../data/news";
+import { studio } from "../data/studio";
+import Button from "./Button.astro";
+import Photo from "./Photo.astro";
+
+/**
+ * News that isn't an event (a new class, a new instructor): text on a sage
+ * panel with the photo beside it, so it reads differently from event cards.
+ */
+interface Props {
+  item: NewsItem;
+  level?: 2 | 3;
+}
+
+const { item, level = 3 } = Astro.props;
+const Heading = level === 2 ? "h2" : "h3";
+const href = item.action.kind === "link"
+  ? item.action.href
+  : item.action.kind === "sms" ? studio.smsHref : studio.phoneHref;
+---
+
+<article class="news">
+  <div class="photo">
+    <Photo
+      src={item.photo}
+      alt={item.alt}
+      sizes="(max-width: 760px) 100vw, 45vw"
+      position={item.position}
+    />
+  </div>
+  <div class="text">
+    {item.tag && <span class="tag">{item.tag}</span>}
+    <Heading class="title">{item.title}</Heading>
+    <p class="strong-text">{item.text}</p>
+    <div class="buttons action">
+      <Button href={href}>{item.action.label}</Button>
+    </div>
+  </div>
+</article>
+
+<style>
+  /*
+    The photo comes first in the markup so it stays on top when stacked;
+    row-reverse puts it on the right when the two sit side by side.
+  */
+  .news {
+    display: flex;
+    flex-direction: row-reverse;
+    flex-wrap: wrap;
+    overflow: hidden;
+    border-radius: var(--radius-card);
+  }
+
+  .photo {
+    position: relative;
+    flex: 1 1 420px;
+    min-height: 380px;
+  }
+
+  .photo :global(.photo-fill) {
+    position: absolute;
+    inset: 0;
+  }
+
+  .text {
+    display: flex;
+    flex: 1 1 420px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 16px;
+    padding: clamp(32px, 5vw, 64px);
+    background: var(--color-panel-green);
+  }
+
+  .tag {
+    align-self: flex-start;
+    padding: 4px 14px;
+    background: var(--color-card);
+    border-radius: var(--radius-pill);
+    color: var(--color-accent);
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .title {
+    font-size: clamp(28px, 3vw, 36px);
+    line-height: 1.15;
+  }
+
+  .action {
+    margin-top: 6px;
+  }
+</style>

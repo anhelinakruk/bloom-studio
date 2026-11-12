@@ -1,0 +1,102 @@
+---
+/**
+ * Pill-shaped link. The mockup uses one 14 times across three colour variants.
+ *
+ * It renders an <a> because every button in the design navigates somewhere:
+ * the booking app, a phone number or an SMS. The one real form control on the
+ * site (the newsletter submit) styles itself locally.
+ *
+ *   primary  green on light backgrounds, the main call to action
+ *   light    white on photos and coloured panels
+ *   outline  transparent, border takes the surrounding text colour */
+interface Props {
+  href: string;
+  variant?: "primary" | "light" | "outline";
+}
+
+const { href, variant = "primary" } = Astro.props;
+---
+
+<a href={href} class:list={["button", variant]}>
+  <slot />
+</a>
+
+<style>
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--touch-target);
+    padding: 0 30px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-pill);
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-align: center;
+    text-decoration: none;
+    transition:
+      background-color 0.25s ease,
+      border-color 0.25s ease,
+      color 0.25s ease,
+      box-shadow 0.25s ease,
+      transform 0.25s ease;
+  }
+
+  /* The smallest phones: less side padding so labels stay on one line */
+  @media (max-width: 400px) {
+    .button {
+      padding: 0 18px;
+    }
+  }
+
+  .button:active {
+    transform: translateY(0);
+    box-shadow: none;
+  }
+
+  .primary {
+    background: var(--color-accent);
+    color: #fff;
+  }
+
+  .light {
+    background: var(--color-card);
+    border-color: var(--color-border-strong);
+    color: var(--color-text);
+  }
+
+  /* Sits on the hero photo and in the sticky bar, so it borrows its colour */
+  .outline {
+    background: transparent;
+    border-color: currentColor;
+    color: inherit;
+  }
+
+  /*
+    The global `a:hover` turns links green, which would make the green button
+    unreadable. Each variant states its own hover colour instead.
+  */
+  .primary:hover {
+    background: #3f5844;
+    color: #fff;
+    box-shadow: 0 8px 20px rgb(77 106 82 / 25%);
+    transform: translateY(-1px);
+  }
+
+  /*
+    Lifts instead of turning green: this variant also sits on the green
+    invite card, where a green fill would make it vanish.
+  */
+  .light:hover {
+    color: var(--color-text);
+    box-shadow: 0 8px 20px rgb(43 42 39 / 18%);
+    transform: translateY(-1px);
+  }
+
+  /* currentColor keeps the tint right both on the dark hero and on light bars */
+  .outline:hover {
+    background: color-mix(in srgb, currentColor 12%, transparent);
+    color: inherit;
+  }
+</style>

@@ -1,0 +1,53 @@
+---
+import { studio } from "../data/studio";
+import Button from "./Button.astro";
+
+/**
+ * Green "first class" card that closes a subpage, right above the footer.
+ *
+ * A contained card rather than another full-width band: a beige panel often
+ * sits right above it and the footer right below, and three stacked bands of
+ * colour read as stripes.
+ */
+---
+
+<section class="container wrap">
+  <div class="invite">
+    <h2>Przyjdź na pierwsze zajęcia</h2>
+    <p class="text">Pierwsze zajęcia grupowe są bezpłatne.</p>
+    <div class="buttons invite-buttons">
+      <Button href={studio.bookingUrl} variant="light">Grafik i zapisy</Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Same gap above the card and below it, down to the footer's top line */
+  .wrap {
+    padding-block: var(--space-section);
+  }
+
+  .invite {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: clamp(56px, 7vw, 96px) clamp(24px, 5vw, 64px);
+    background: var(--color-accent);
+    border-radius: var(--radius-card);
+    color: var(--color-text-light);
+    text-align: center;
+  }
+
+  .text {
+    max-width: 600px;
+    font-size: 18px;
+    opacity: 0.85;
+    text-wrap: balance;
+  }
+
+  .invite-buttons {
+    justify-content: center;
+    margin-top: 8px;
+  }
+</style>

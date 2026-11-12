@@ -1,0 +1,27 @@
+---
+import { studio } from "../data/studio";
+import Button from "./Button.astro";
+---
+
+<div class="mobile-only bar">
+  <Button href={studio.phoneHref} variant="outline">Zadzwoń</Button>
+  <Button href={studio.bookingUrl}>Grafik i zapisy</Button>
+</div>
+
+<style>
+  /*
+    Grid rather than flex so the two buttons stretch to their columns without
+    the parent having to reach into the Button component's own styles.
+  */
+  .bar {
+    position: sticky;
+    bottom: 0;
+    z-index: 6;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 10px;
+    padding: 10px 16px;
+    background: var(--color-bg);
+    border-top: 1px solid var(--color-border-strong);
+  }
+</style>

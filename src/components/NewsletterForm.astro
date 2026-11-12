@@ -1,0 +1,117 @@
+---
+import { studio } from "../data/studio";
+
+/**
+ * Newsletter sign-up, on the home page and on /aktualnosci.
+ *
+ * Both fields are required, and the consent box is never pre-ticked (GDPR).
+ * Until the MailerLite form is set in studio.ts, the button stays disabled.
+ */
+const newsletterUrl: string | null = studio.newsletterFormUrl;
+---
+
+<form class="newsletter" action={newsletterUrl ?? undefined} method="POST">
+  <label class="label" for="newsletter-email">
+    Nowości mailem: nowe zajęcia, wydarzenia i wyjazdy
+  </label>
+  <div class="row">
+    <input
+      id="newsletter-email"
+      name="email"
+      type="email"
+      required
+      autocomplete="email"
+      placeholder="Twój adres e-mail"
+      class="input"
+    />
+    <button type="submit" class="submit" disabled={!newsletterUrl}>Zapisz mnie</button>
+  </div>
+  <label class="consent">
+    <input type="checkbox" name="consent" required class="checkbox" />
+    <span>
+      Zgadzam się na otrzymywanie newslettera na podany adres e-mail. Zgodę mogę wycofać w
+      każdej chwili. Administratorem danych jest {studio.foundation.name}, szczegóły
+      w <a href="/polityka-prywatnosci">polityce prywatności</a>.
+    </span>
+  </label>
+  {
+    !newsletterUrl && (
+      <p class="todo">[DO UZUPEŁNIENIA: podpięcie do MailerLite, kod formularza od Dayany]</p>
+    )
+  }
+</form>
+
+<style>
+  .newsletter {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 520px;
+    text-align: left;
+  }
+
+  .label {
+    font-weight: 700;
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .input {
+    flex: 1 1 240px;
+    min-height: var(--touch-target);
+    padding: 0 20px;
+    background: var(--color-card);
+    border: 1px solid var(--color-field-border);
+    border-radius: var(--radius-pill);
+    font: inherit;
+  }
+
+  .submit {
+    min-height: var(--touch-target);
+    padding: 0 30px;
+    background: var(--color-text);
+    border: 0;
+    border-radius: var(--radius-pill);
+    color: #fff;
+    font: inherit;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+  }
+
+  .submit:hover:not(:disabled) {
+    background: var(--color-accent);
+  }
+
+  .submit:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  .consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--color-text-subtle);
+  }
+
+  .checkbox {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    margin-top: 3px;
+  }
+
+  .todo {
+    font-size: 14px;
+    color: var(--color-text-subtle);
+  }
+</style>

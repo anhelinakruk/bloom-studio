@@ -1,0 +1,213 @@
+---
+import type { EventDate, NewsItem } from "../data/news";
+import { studio } from "../data/studio";
+import Button from "./Button.astro";
+import Photo from "./Photo.astro";
+
+/**
+ * An event: photo on one side; on the other the day set large like a
+ * calendar page, then time, price, place and how to sign up. Used for the
+ * next event on the home page and at the top of /aktualnosci. The home
+ * preview links to the full description and sign-up on the news page.
+ */
+interface Props {
+  item: NewsItem & { date: EventDate };
+  level?: 2 | 3;
+  preview?: boolean;
+}
+
+const { item, level = 3, preview = false } = Astro.props;
+const Heading = level === 2 ? "h2" : "h3";
+const { date } = item;
+---
+
+<article class:list={["event", { preview }]}>
+  <div class="photo">
+    <Photo
+      src={item.photo}
+      alt={item.alt}
+      sizes="(max-width: 760px) 100vw, 45vw"
+      position={item.position}
+    />
+  </div>
+  <div class="body">
+    <div class="date">
+      <span class="day">{date.day}</span>
+      <span class="month">{date.month}</span>
+      <span class="weekday">{date.weekday}</span>
+    </div>
+    <div class="info">
+      <Heading class="title">{item.title}</Heading>
+      <dl class="details">
+        <div class="detail">
+          <dt>Godzina</dt>
+          <dd>{date.time}</dd>
+        </div>
+        {date.price && (
+          <div class="detail">
+            <dt>Cena</dt>
+            <dd>{date.price}</dd>
+          </div>
+        )}
+        {!preview && (
+          <div class="detail">
+            <dt>Miejsce</dt>
+            <dd>{studio.address.town}, {studio.address.street}</dd>
+          </div>
+        )}
+      </dl>
+      {preview ? (
+        <div>
+          <a class="details-link" href="/aktualnosci#najblizsze-wydarzenie">Szczegóły wydarzenia</a>
+        </div>
+      ) : (
+        <>
+          <p class="strong-text">{item.text}</p>
+          <div class="contact">
+            <Button href={studio.smsHref}>Zapisz się SMS-em</Button>
+          </div>
+        </>
+      )}
+    </div>
+  </div>
+</article>
+
+<style>
+  /* Rounding the shared wrapper keeps the corners right side by side and stacked */
+  .event {
+    display: flex;
+    flex-wrap: wrap;
+    overflow: hidden;
+    background: var(--color-card);
+    border-radius: var(--radius-card);
+  }
+
+  .photo {
+    position: relative;
+    flex: 1 1 340px;
+    min-height: 420px;
+  }
+
+  .preview .photo {
+    min-height: 300px;
+  }
+
+  /* Fills the space next to the text instead of setting the card's height */
+  .photo :global(.photo-fill) {
+    position: absolute;
+    inset: 0;
+  }
+
+  .body {
+    display: flex;
+    /* Leave room for the title and event details beside the date */
+    flex: 2 1 480px;
+    align-items: center;
+    gap: 36px;
+    padding: clamp(28px, 5vw, 64px);
+  }
+
+  .date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-self: stretch;
+    justify-content: center;
+    flex-shrink: 0;
+    min-width: 104px;
+    padding-right: 36px;
+    border-right: 1px solid var(--color-border-strong);
+    text-align: center;
+  }
+
+  .day {
+    font-family: var(--font-heading);
+    font-size: clamp(56px, 6vw, 76px);
+    line-height: 1;
+    color: var(--color-accent);
+  }
+
+  .month {
+    margin-top: 6px;
+    font-weight: 700;
+  }
+
+  .weekday {
+    font-size: 15px;
+    color: var(--color-text-subtle);
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-width: 0;
+  }
+
+  .title {
+    font-size: clamp(28px, 3vw, 36px);
+    line-height: 1.15;
+  }
+
+  .details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .detail {
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .detail dt {
+    color: var(--color-text-subtle);
+  }
+
+  .detail dd {
+    margin: 0;
+    font-weight: 500;
+  }
+
+  .contact {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin-top: 6px;
+  }
+
+  .details-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch-target);
+    font-weight: 700;
+    text-underline-offset: 4px;
+  }
+
+  /* Narrow screens: the date sits above the text as one line */
+  @media (max-width: 560px) {
+    .body {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 20px;
+    }
+
+    .date {
+      flex-direction: row;
+      align-items: baseline;
+      justify-content: flex-start;
+      gap: 10px;
+      padding: 0 0 18px;
+      border-right: 0;
+      border-bottom: 1px solid var(--color-border-strong);
+    }
+
+    .day {
+      font-size: 52px;
+    }
+  }
+</style>

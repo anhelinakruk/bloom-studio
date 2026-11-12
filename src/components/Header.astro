@@ -1,0 +1,368 @@
+---
+import { studio } from "../data/studio";
+import { navLinks, navMenu } from "../data/nav";
+import Button from "./Button.astro";
+
+interface Props {
+  overlay?: boolean;
+}
+
+const { overlay = false } = Astro.props;
+
+// The built site may serve a page as "/zajecia/", so the trailing slash is ignored
+const path = Astro.url.pathname.replace(/\/$/, "");
+const current = (href: string) => (path === href ? "page" : undefined);
+---
+
+<header class="header">
+  <div class="container top-bar">
+    <a href="/" class="logo">
+      <span class="logo-name">BLOOM</span>
+      <span class="logo-tagline">studio by Dayana</span>
+    </a>
+
+    <nav class="nav" aria-label="Menu główne">
+      {
+        navMenu.map((item) =>
+          "children" in item ? (
+            <details class="dropdown">
+              <summary
+                class:list={[
+                  "nav-link",
+                  "dropdown-toggle",
+                  { active: item.children.some((child) => current(child.href)) },
+                ]}
+              >
+                {item.label}
+                <svg
+                  aria-hidden="true"
+                  class="chevron"
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.4"
+                >
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
+              </summary>
+              <div class="panel dropdown-panel">
+                {item.children.map(({ href, label }) => (
+                  <a class="menu-link" href={href} aria-current={current(href)}>
+                    {label}
+                  </a>
+                ))}
+              </div>
+            </details>
+          ) : (
+            <a class="nav-link" href={item.href} aria-current={current(item.href)}>
+              {item.label}
+            </a>
+          ),
+        )
+      }
+      <Button href={studio.bookingUrl}>Grafik i zapisy</Button>
+    </nav>
+
+    {/*
+      Both menus are <details>, so they open and close with no JavaScript.
+      The script below only adds closing on a link, an outside tap or Escape.
+
+      The full menu needs ~960px. Below that the burger takes over. On a
+      portrait tablet the booking button stays next to it; on a phone the
+      sticky bottom bar carries booking instead.
+    */}
+    <div class="compact">
+      <span class="compact-booking">
+        <Button href={studio.bookingUrl}>Grafik i zapisy</Button>
+      </span>
+      <details class="menu">
+        <summary class="menu-button">
+          <span class="sr-only">Menu</span>
+          <svg
+            aria-hidden="true"
+            class="icon-open"
+            width="22"
+            height="22"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+          >
+            <path d="M4 7h16M4 12h16M4 17h16"></path>
+          </svg>
+          <svg
+            aria-hidden="true"
+            class="icon-close"
+            width="22"
+            height="22"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+          >
+            <path d="M6 6l12 12M18 6L6 18"></path>
+          </svg>
+        </summary>
+        <nav class="panel menu-panel" aria-label="Menu główne">
+          {
+            navLinks.map(({ href, label }) => (
+              <a class="menu-link" href={href} aria-current={current(href)}>
+                {label}
+              </a>
+            ))
+          }
+        </nav>
+      </details>
+    </div>
+  </div>
+</header>
+
+{/*
+  On the home page the header lies transparent over the hero photo and turns
+  solid once the page scrolls. `at-top` is only ever set here, so without
+  JavaScript the header simply stays solid. Inline, so it runs before the
+  first paint and the header doesn't flash solid on load.
+*/}
+{
+  overlay && (
+    <script is:inline>
+      (() => {
+        const header = document.currentScript.previousElementSibling;
+        const update = () => header.classList.toggle("at-top", window.scrollY < 40);
+        update();
+        window.addEventListener("scroll", update, { passive: true });
+      })();
+    </script>
+  )
+}
+
+<script>
+  const menus = document.querySelectorAll<HTMLDetailsElement>(".menu, .dropdown");
+
+  document.addEventListener("click", (event) => {
+    const target = event.target as Element;
+    for (const menu of menus) {
+      if (menu.open && (!menu.contains(target) || target.closest("a"))) menu.open = false;
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") menus.forEach((menu) => (menu.open = false));
+  });
+</script>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    height: var(--header-height);
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
+    transition:
+      background-color 0.3s ease,
+      border-color 0.3s ease;
+  }
+
+  /* --- Transparent over the hero photo (home page, before scrolling) --- */
+  .header.at-top {
+    background: transparent;
+    border-bottom-color: transparent;
+  }
+
+  .at-top .logo,
+  .at-top .nav-link,
+  .at-top .menu-button {
+    color: #fff;
+  }
+
+  .at-top .logo-tagline {
+    color: rgb(255 255 255 / 85%);
+  }
+
+  /* White outline on the photo, like the hero's "Zadzwoń" button */
+  .at-top .menu-button {
+    border-color: #fff;
+  }
+
+  /* The usual green hover would be hard to read on the photo */
+  .at-top .nav-link:hover {
+    color: #fff;
+    opacity: 0.75;
+  }
+
+  .logo,
+  .nav-link,
+  .logo-tagline,
+  .menu-button {
+    transition:
+      color 0.3s ease,
+      background-color 0.3s ease,
+      border-color 0.3s ease,
+      opacity 0.2s ease;
+  }
+
+  .top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    height: 100%;
+  }
+
+  .logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1;
+    text-decoration: none;
+  }
+
+  .logo-name {
+    font-family: var(--font-heading);
+    font-size: 28px;
+    letter-spacing: 0.16em;
+  }
+
+  .logo-tagline {
+    margin-top: 3px;
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-size: 13px;
+    color: var(--color-text-subtle);
+  }
+
+  .nav {
+    align-items: center;
+    gap: 30px;
+    font-size: 16px;
+  }
+
+  .nav-link {
+    text-decoration: none;
+  }
+
+  .nav-link[aria-current="page"],
+  .menu-link[aria-current="page"],
+  .dropdown-toggle.active {
+    color: var(--color-accent);
+  }
+
+  .menu,
+  .dropdown {
+    position: relative;
+  }
+
+  .dropdown-toggle {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .dropdown-toggle:hover {
+    color: var(--color-accent);
+  }
+
+  .chevron {
+    transition: transform 0.2s ease;
+  }
+
+  .dropdown[open] .chevron {
+    transform: rotate(180deg);
+  }
+
+  /* Drops to just below the header's bottom line */
+  .dropdown-panel {
+    left: -22px;
+    top: calc(100% + 22px);
+  }
+
+  /* Round icon button: three lines, turning into a cross while open */
+  .menu-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--color-text);
+    border-radius: var(--radius-pill);
+  }
+
+  .icon-close,
+  .menu[open] .icon-open {
+    display: none;
+  }
+
+  .menu[open] .icon-close {
+    display: block;
+  }
+
+  /* Read out by screen readers, invisible on screen */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .panel {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    min-width: 230px;
+    padding: 8px;
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    box-shadow: 0 10px 30px rgb(43 42 39 / 12%);
+  }
+
+  .menu-panel {
+    top: calc(100% + 10px);
+    right: 0;
+  }
+
+  .menu-link {
+    display: flex;
+    align-items: center;
+    min-height: var(--touch-target);
+    padding: 0 14px;
+    text-decoration: none;
+  }
+
+  /* Full menu from 961px; burger (plus booking on a tablet) below that */
+  .nav,
+  .compact {
+    display: none;
+  }
+
+  .compact {
+    align-items: center;
+    gap: 12px;
+  }
+
+  @media (min-width: 961px) {
+    .nav {
+      display: flex;
+    }
+  }
+
+  @media (max-width: 960px) {
+    .compact {
+      display: flex;
+    }
+  }
+
+  /* On a phone the sticky bottom bar already has the booking button */
+  @media (max-width: 760px) {
+    .compact-booking {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,434 @@
+---
+import Base from "../layouts/Base.astro";
+import Button from "../components/Button.astro";
+import InviteCard from "../components/InviteCard.astro";
+import Photo from "../components/Photo.astro";
+import { studio } from "../data/studio";
+
+import wallPhoto from "../images/zdjecie-ze-studio.jpg";
+import ringPhoto from "../images/kolo-do-pilatesu.jpg";
+import barrePhoto from "../images/studio-do-barre.jpg";
+import reformerPhoto from "../images/dayana-na-reformerze-cwiczy.jpg";
+import setupPhoto from "../images/przygotowania-studia.jpg";
+import ballsPhoto from "../images/dayana-i-basia-1.jpg";
+import coachingPhoto from "../images/basia-uczy-dayane.jpg";
+import balancePhoto from "../images/dayana-trzyma-basie-na-reformerze.jpg";
+import ballPhoto from "../images/pilka.jpg";
+import barresPhoto from "../images/studio-do-barre-2.jpg";
+import { reviews } from "../data/reviews";
+
+const review = reviews[0];
+
+// Plain facts from the brief: who the studio is for
+const audiences = [
+  {
+    title: "Dla początkujących",
+    text: "Jeśli to Twój pierwszy raz, zaczynamy od podstaw. W małej grupie instruktorka pokaże każde ćwiczenie i poprawi ustawienie.",
+  },
+  {
+    title: "Dla dzieci",
+    text: "Taniec w dwóch grupach: 6–8 lat we wtorki i 10–13 lat w poniedziałki, o 17:00. W grupie jest najwyżej pięcioro dzieci.",
+  },
+  {
+    title: "Dla rodziców",
+    text: "Kiedy dziecko ma taniec, możesz w tym samym czasie poćwiczyć na reformerze. Nie trzeba czekać na korytarzu ani w samochodzie.",
+  },
+  {
+    title: "We dwoje",
+    text: "Mamy dwa reformery, więc możesz ćwiczyć z koleżanką, mamą albo partnerem.",
+  },
+];
+
+// The first photo is the large one in the gallery
+const gallery = [
+  { photo: ballsPhoto, alt: "Dwie instruktorki leżą na podłodze z nogami w górze, jedna trzyma stopami piłkę, druga ma gumę na kostkach." },
+  { photo: coachingPhoto, alt: "Instruktorka pomaga ćwiczącej na reformerze ułożyć biodra." },
+  { photo: balancePhoto, alt: "Instruktorka asekuruje ćwiczącą, która stoi na jednej nodze z wyciągniętymi rękami." },
+  { photo: ballPhoto, alt: "Stopy w skarpetkach trzymają różową piłkę do pilatesu na tle zielonej ściany." },
+  { photo: barresPhoto, alt: "Różowe drążki do barre na matach, w tle zielona ściana z logo Bloom." },
+];
+
+// Only what the photos and the brief show. The pilates chair in the room is
+// left out until we know which classes use it.
+const equipment = [
+  {
+    name: "Maty i przybory",
+    text: "Maty, koła do pilatesu, piłki, kostki i wałki są na miejscu. Nie musisz przynosić własnej maty.",
+    photo: ringPhoto,
+    alt: "Osoba trzyma przed sobą koło do pilatesu.",
+    position: "50% 40%",
+  },
+  {
+    name: "Drążki do barre",
+    text: "Przenośne drążki, przy których ćwiczymy barre.",
+    photo: barrePhoto,
+    alt: "Dwa drążki do barre na matach, w tle zielona ściana z logo Bloom.",
+    position: "50% 60%",
+  },
+  {
+    name: "Dwa reformery",
+    text: "Na zajęcia indywidualne albo we dwoje.",
+    photo: reformerPhoto,
+    alt: "Instruktorka ćwiczy na reformerze z rozłożonymi ramionami.",
+    position: "50% 45%",
+  },
+];
+
+---
+
+<Base
+  title="O studiu – Bloom Studio by Dayana"
+  description="Kameralne studio pilatesu i barre w Szewcach pod Wrocławiem: historia Bloom, sala i sprzęt do ćwiczeń."
+>
+  <section class="container intro">
+    <div class="intro-text">
+      <h1 class="intro-title">O studiu</h1>
+      <p class="muted lead">
+        Bloom Studio by Dayana to kameralny klub sportowy w Szewcach pod Wrocławiem. Pilates na
+        macie, barre, stretching i taniec, w grupach najwyżej sześciu osób. Pilates na reformerze
+        prowadzimy indywidualnie lub w duecie.
+      </p>
+      <p class="strong-text">
+        Ćwiczymy w sali na pierwszym piętrze. Wieczorem
+        zapalamy lampki i świece.
+      </p>
+      <div class="buttons">
+        <Button href={studio.bookingUrl}>Zobacz grafik i zapisz się</Button>
+        <Button href="/zajecia" variant="light">Zajęcia i cennik</Button>
+      </div>
+    </div>
+    <div class="intro-photo">
+      <Photo
+        src={wallPhoto}
+        alt="Zielona ściana z drewnianym logo Bloom Studio, podświetlona od dołu ciepłym światłem."
+        sizes="(max-width: 880px) 100vw, 45vw"
+        loading="eager"
+      />
+    </div>
+  </section>
+
+  <section class="panel split">
+    <div class="split-photo">
+      <Photo
+        src={setupPhoto}
+        alt="Przygotowania sali: składanie drążków do barre, na podłodze leżą nowe maty."
+        sizes="(max-width: 760px) 100vw, 50vw"
+        position="40% 50%"
+      />
+    </div>
+    <div class="split-text">
+      <h2>Jak powstał Bloom</h2>
+      <p class="strong-text">
+        Studio założyła Dayana Radzimowska. Taniec jest z nią od dzieciństwa, dziś uczy go dzieci
+        i kobiety, a do tego prowadzi pilates i barre.
+      </p>
+      <p class="strong-text">
+        Bloom stworzyła z myślą o kobietach, żeby miały miejsce, w którym zadbają o ciało i o
+        ducha i mogą się rozwijać. Dziś zajęcia prowadzi razem z Basią.
+      </p>
+      <div>
+        <a class="bold-link" href="/instruktorki">Poznaj Dayanę i Basię</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="container audiences">
+    <div class="section-head">
+      <h2>Dla kogo jest Bloom</h2>
+      <p class="muted">Dla dorosłych i dla dzieci, od pierwszych zajęć.</p>
+    </div>
+    <div class="audience-grid">
+      {
+        audiences.map((item) => (
+          <article class="audience">
+            <h3 class="audience-title">{item.title}</h3>
+            <p class="strong-text">{item.text}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="container equipment">
+      <div class="section-head">
+        <h2>Na czym ćwiczymy</h2>
+        <p class="muted">Cały sprzęt jest w studiu, przychodzisz w wygodnym stroju.</p>
+      </div>
+      <div class="equipment-grid">
+        {
+          equipment.map((item) => (
+            <article class="tool">
+              <div class="tool-photo">
+                <Photo
+                  src={item.photo}
+                  alt={item.alt}
+                  sizes="(max-width: 760px) 100vw, 33vw"
+                  widths={[480, 800]}
+                  position={item.position}
+                />
+              </div>
+              <h3 class="tool-name">{item.name}</h3>
+              <p class="strong-text">{item.text}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+
+  <section class="container gallery-wrap">
+    <h2>Zajrzyj do sali</h2>
+    <div class="gallery">
+      {
+        gallery.map((item, index) => (
+          <div class:list={["gallery-item", { "gallery-large": index === 0 }]}>
+            <Photo
+              src={item.photo}
+              alt={item.alt}
+              sizes={index === 0 ? "(max-width: 760px) 100vw, 50vw" : "(max-width: 760px) 50vw, 25vw"}
+              widths={[480, 800, 1200]}
+            />
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="container extras">
+    <article class="extra-card">
+      <h2 class="extra-title">Poza zajęciami</h2>
+      <p class="strong-text">
+        Organizujemy też wydarzenia: wieczory z pilatesem i relaksacją przy świecach, pilates i
+        malowanie przy winie w ogrodzie studia, a we wrześniu trzydniowy wyjazd do Pałacu
+        Jugowice.
+      </p>
+      <a class="bold-link" href="/aktualnosci">Zobacz aktualności</a>
+    </article>
+    <figure class="quote-card">
+      <span class="stars" role="img" aria-label="Ocena 5 na 5">★★★★★</span>
+      <blockquote class="quote">„{review.text}”</blockquote>
+      <figcaption class="quote-caption subtle">
+        <span>{review.author}, opinia w Google</span>
+        <a href={studio.googleProfileUrl}>Zobacz wszystkie opinie</a>
+      </figcaption>
+    </figure>
+  </section>
+
+  <InviteCard />
+</Base>
+
+<style>
+  /* --- Wstęp --- */
+  .intro {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 48px 72px;
+    padding-block: clamp(48px, 7vw, 96px) var(--space-section);
+  }
+
+  .intro-text {
+    display: flex;
+    flex: 1 1 400px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+  }
+
+  /* Smaller than the global h1: it shares the row with a photo */
+  .intro-title {
+    font-size: clamp(44px, 5.5vw, 80px);
+  }
+
+  .intro-photo {
+    flex: 1 1 360px;
+    max-width: 540px;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: var(--radius-card);
+  }
+
+  /* --- Sprzęt --- */
+  .equipment {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+    padding-block: var(--space-section);
+  }
+
+  .equipment-grid {
+    display: grid;
+    /* Three in a row from a portrait tablet up, one below each other on a phone */
+    grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+    gap: 24px;
+  }
+
+  .tool {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .tool-photo {
+    aspect-ratio: 4 / 5;
+    margin-bottom: 8px;
+    overflow: hidden;
+    border-radius: var(--radius-card);
+  }
+
+  .tool-name {
+    font-size: 26px;
+  }
+
+  /* --- Jak powstał Bloom --- */
+  .split {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .split-photo {
+    position: relative;
+    flex: 1 1 480px;
+    min-height: 460px;
+  }
+
+  /* Fills the space next to the text instead of setting the height itself */
+  .split-photo :global(.photo-fill) {
+    position: absolute;
+    inset: 0;
+  }
+
+  .split-text {
+    display: flex;
+    flex: 1 1 480px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 18px;
+    padding: clamp(48px, 6vw, 96px) clamp(24px, 6vw, 96px);
+  }
+
+  /* --- Dla kogo --- */
+  .audiences {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+    padding-block: var(--space-section);
+  }
+
+  .audience-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+    gap: 16px;
+  }
+
+  .audience {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 28px;
+    background: var(--color-card);
+    border-radius: var(--radius-card);
+  }
+
+  .audience-title {
+    font-size: 24px;
+  }
+
+  /* --- Galeria: one large photo and four small ones --- */
+  .gallery-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    padding-block: var(--space-section);
+  }
+
+  .gallery {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-auto-rows: clamp(160px, 18vw, 260px);
+    gap: 12px;
+  }
+
+  .gallery-item {
+    overflow: hidden;
+    border-radius: var(--radius-card);
+  }
+
+  .gallery-large {
+    grid-row: span 2;
+  }
+
+  /* --- Poza zajęciami + opinia --- */
+  .extras {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+    gap: 16px;
+    padding-block: var(--space-section) 0;
+  }
+
+  .extra-card,
+  .quote-card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 0;
+    padding: clamp(28px, 4vw, 48px);
+    border-radius: var(--radius-card);
+  }
+
+  .extra-card {
+    align-items: flex-start;
+    background: var(--color-panel-green);
+  }
+
+  .extra-title {
+    font-size: clamp(28px, 3vw, 36px);
+  }
+
+  .quote-card {
+    background: var(--color-card);
+  }
+
+  .stars {
+    color: var(--color-accent);
+    letter-spacing: 3px;
+  }
+
+  .quote {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-size: 20px;
+    line-height: 1.45;
+  }
+
+  /* Author and link on separate lines, so the link never wraps oddly */
+  .quote-caption {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 15px;
+  }
+
+  @media (max-width: 880px) {
+    .intro-photo {
+      max-width: none;
+      aspect-ratio: 4 / 3;
+    }
+  }
+
+  /* Phone: two columns, the large photo across both */
+  @media (max-width: 760px) {
+    .gallery {
+      grid-template-columns: 1fr 1fr;
+      grid-auto-rows: 180px;
+    }
+
+    .gallery-large {
+      grid-column: span 2;
+      grid-row: span 1;
+    }
+  }
+</style>

@@ -1,0 +1,45 @@
+---
+/**
+ * Stand-in for a photo Dayana has not sent yet.
+ *
+ * It only provides the look: a calm beige fill with a caption naming exactly
+ * which picture belongs here. Size, radius and position stay with the parent,
+ * which wraps this in its own sized element — Astro's scoped styles cannot
+ * reach into a child component, and a size prop for every slot would be more
+ * configuration than it is worth. In step 8 each one becomes a real <img>.
+ */
+interface Props {
+  caption: string;
+  tone?: "default" | "light" | "map";
+}
+
+const { caption, tone = "default" } = Astro.props;
+---
+
+<div class:list={["photo", tone]}>{caption}</div>
+
+<style>
+  .photo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 24px;
+    color: var(--color-photo-text);
+    font-size: 15px;
+    text-align: center;
+  }
+
+  .default {
+    background: var(--color-photo);
+  }
+
+  .light {
+    background: var(--color-photo-light);
+  }
+
+  .map {
+    background: var(--color-photo-map);
+  }
+</style>

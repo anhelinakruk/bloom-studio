@@ -1,0 +1,70 @@
+/*
+  Brand tokens. The single place where colours, fonts and dimensions live.
+  Values come from the brief ("Styl" section) and the approved mockup.
+*/
+
+:root {
+  /* --- Backgrounds --- */
+  --color-bg: #f7f4ef;
+  --color-panel: #efe7dc;
+  --color-card: #ffffff;
+  --color-panel-green: #e4e9e0;
+
+  /* --- Text --- */
+  --color-text: #2b2a27;
+  --color-text-strong: #3a3732;
+  --color-text-muted: #4a463f;
+  --color-text-subtle: #5f5a53;
+  --color-text-light: #f7f4ef;
+
+  /* --- Accent --- */
+  --color-accent: #4d6a52;
+
+  /* --- Lines --- */
+  --color-border: #e6ded2;
+  --color-border-strong: #d6cec2;
+  --color-field-border: #a59b8e;
+
+  /*
+    Stand-in fills for the photo slots. They disappear in step 8, once Dayana
+    sends the real pictures — until then they should read as "photo pending",
+    not as a broken image.
+  */
+  --color-photo: #cfc6b8;
+  --color-photo-light: #d9d1c4;
+  --color-photo-map: #e2dbcf;
+  --color-photo-text: #4a443d;
+
+  /* Shown behind the hero until its background image loads */
+  --color-hero: #6f6a5d;
+
+  /* --- Fonts --- */
+  --font-heading: "Bodoni Moda", Georgia, "Times New Roman", serif;
+  --font-body: "Karla", system-ui, -apple-system, sans-serif;
+
+  /* --- Dimensions --- */
+  --width-page: 1240px;
+  --width-text: 900px;
+  --radius-card: 6px;
+  --radius-pill: 999px;
+
+  /* --- Spacing --- */
+  /* Brief: "dużo światła między sekcjami" */
+  --space-section: clamp(72px, 9vw, 120px);
+  --space-inline: 24px;
+
+  /* Minimum height for anything tapped with a thumb */
+  --touch-target: 48px;
+
+  /*
+    Fixed bars, so the hero can fill exactly what is left of the screen.
+    Header: set in Header.astro. Phone bar: 48px button + 2×10px padding + 1px line.
+  */
+  --header-height: 73px;
+  --mobile-bar-height: 69px;
+
+  /* --- Heading scale --- */
+  --text-h1: clamp(48px, 7vw, 108px);
+  --text-h2: clamp(34px, 4vw, 52px);
+  --text-h3: 30px;
+}

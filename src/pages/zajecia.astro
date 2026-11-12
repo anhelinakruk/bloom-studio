@@ -1,0 +1,545 @@
+---
+import Base from "../layouts/Base.astro";
+import Button from "../components/Button.astro";
+import Photo from "../components/Photo.astro";
+import PhotoPlaceholder from "../components/PhotoPlaceholder.astro";
+import { studio } from "../data/studio";
+import { classes, pregnancyPilates } from "../data/classes";
+
+import roomPhoto from "../images/sala-z-matami.jpg";
+
+/*
+  The timetable follows the booking app as of 9.11.2026. The Instagram
+  schedule differs and Dayana still has to confirm which one is current.
+*/
+const week = [
+  {
+    day: "Poniedziałek",
+    teacher: "Dayana",
+    slots: [
+      ["08:00", "Pilates"],
+      ["17:00", "Taniec 10–13 lat"],
+      ["18:00", "Pilates"],
+      ["19:00", "Barre"],
+      ["20:00", "High Heels"],
+    ],
+  },
+  {
+    day: "Wtorek",
+    teacher: "Basia",
+    slots: [
+      ["17:00", "Taniec 6–8 lat"],
+      ["18:00", "Pilates"],
+      ["19:00", "Pilates"],
+      ["20:00", "Pilates"],
+    ],
+  },
+  {
+    day: "Środa",
+    teacher: "Dayana",
+    slots: [
+      ["17:00", "Pilates"],
+      ["18:00", "Barre"],
+      ["19:00", "Barre"],
+      ["20:00", "Pilates"],
+    ],
+  },
+  {
+    day: "Czwartek",
+    teacher: "Basia",
+    slots: [
+      ["18:00", "Pilates"],
+      ["20:00", "Trening Spokojnego Umysłu"],
+    ],
+  },
+];
+
+// Waiting on Dayana's price list.
+const prices = [
+  { label: "Pierwsze zajęcia grupowe", value: "0 zł" },
+  { label: "Jedno wejście", value: "[__] zł" },
+  { label: "Karnet miesięczny", value: "[__] zł" },
+  { label: "Reformer, jedna osoba", value: "[__] zł" },
+  { label: "Reformer, dwie osoby", value: "[__] zł" },
+  { label: "Taniec dla dzieci", value: "[__] zł" },
+];
+
+const notes = [
+  "Na zajęciach jest najwyżej sześć osób, w tańcu dla dzieci pięcioro.",
+  "Grupa rusza, gdy zapiszą się co najmniej cztery osoby.",
+  "Pierwsze zajęcia grupowe są bezpłatne, także taniec dla dzieci. Oferta nie obejmuje reformera ani indywidualnych treningów dla kobiet w ciąży.",
+  "Co zabrać: [DO UZUPEŁNIENIA]",
+  "Odwołanie zajęć: [DO UZUPEŁNIENIA]",
+];
+---
+
+<Base
+  title="Zajęcia i cennik – Bloom Studio by Dayana"
+  description="Pilates na macie i na reformerze, indywidualny pilates dla kobiet w ciąży, barre, stretching i taniec w Szewcach pod Wrocławiem. Opisy zajęć i ceny."
+>
+  {/*
+    Text and photo side by side. The free first class is the main offer, so
+    it sits right under the title, set as a big "0 zł" like the facts on the
+    home page rather than as a separate banner.
+  */}
+  <section class="container intro">
+    <div class="intro-text">
+      <div class="intro-heading">
+        <h1 class="intro-title">Zajęcia i&nbsp;cennik</h1>
+        <nav class="section-nav" aria-label="Na tej stronie">
+          <a href="#zajecia">Zajęcia</a>
+          <span aria-hidden="true">·</span>
+          <a href="#cennik">Cennik</a>
+          <span aria-hidden="true">·</span>
+          <a href="#grafik">Grafik</a>
+        </nav>
+      </div>
+      <p class="muted lead">
+        Pilates na macie i na reformerze, barre, stretching, High Heels i taniec dla dzieci.
+        Zajęcia grupowe liczą najwyżej sześć osób. Na reformerze ćwiczysz indywidualnie lub w duecie.
+      </p>
+      <div class="free">
+        <span class="free-value">0 zł</span>
+        <span class="free-label">za pierwsze zajęcia grupowe,<br />także taniec dla dzieci</span>
+      </div>
+      <div class="buttons">
+        <Button href={studio.bookingUrl}>Zobacz grafik i zapisz się</Button>
+      </div>
+    </div>
+    <div class="intro-photo">
+      <Photo
+        src={roomPhoto}
+        alt="Sala Bloom Studio przygotowana do zajęć: szałwiowe maty z kołami do pilatesu, zielona ściana z logo."
+        sizes="(max-width: 760px) 100vw, 45vw"
+        position="50% 60%"
+        loading="eager"
+      />
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="container week-inner">
+      <div class="section-head">
+        <h2 id="grafik">Tydzień w&nbsp;Bloom</h2>
+        <p class="muted">
+          Sprawdź wolne miejsca i zapisz się w <a href={studio.bookingUrl}>grafiku online</a>.
+        </p>
+      </div>
+      <div class="week">
+        {
+          week.map(({ day, teacher, slots }) => (
+            <div class="day">
+              <div class="day-head">
+                <h3 class="day-name">{day}</h3>
+                <span class="subtle">prowadzi {teacher}</span>
+              </div>
+              <ul class="slots">
+                {slots.map(([time, name]) => (
+                  <li class="slot">
+                    <span class="slot-time">{time}</span>
+                    <span>{name}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="container classes">
+    <div class="section-head">
+      <h2 id="zajecia">Opis zajęć</h2>
+      <p class="muted">Zobacz, na czym polegają zajęcia.</p>
+    </div>
+    <div class="class-list">
+      {
+        classes.map((item) => (
+          <article class="class-row" id={item.id}>
+            <div class="class-photo">
+              {"photo" in item ? (
+                <Photo
+                  src={item.photo}
+                  alt={item.alt}
+                  sizes="(max-width: 760px) 100vw, 220px"
+                  widths={[440, 800]}
+                  position={item.position ?? "50% 75%"}
+                />
+              ) : (
+                <PhotoPlaceholder caption={item.pending} tone="light" />
+              )}
+            </div>
+            <div class="class-body">
+              <div class="class-name">
+                <h3>{item.name}</h3>
+                {item.format && <span class="format">{item.format}</span>}
+                {item.when && <span class="subtle">Kiedy: {item.when}</span>}
+                {item.who && <span class="subtle">{item.who}</span>}
+                {item.duration && <span class="subtle">Czas trwania: {item.duration}</span>}
+              </div>
+              <div class="class-description">
+                <p class="strong-text">{item.text}</p>
+                {item === pregnancyPilates && (
+                  <div>
+                    <Button href={studio.smsHref} variant="light">Zapytaj o zajęcia</Button>
+                  </div>
+                )}
+                {item.id === "reformer" && (
+                  <div>
+                    <Button href={studio.smsHref} variant="light">Umów reformer</Button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="container info">
+      <div class="info-block">
+        <h2 id="cennik">Cennik</h2>
+        <dl class="prices">
+          {
+            prices.map((price) => (
+              <div class="price-row">
+                <dt>{price.label}</dt>
+                <dd>{price.value}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+      <div class="info-block">
+        <h2>Dobrze wiedzieć</h2>
+        <ul class="notes">
+          {notes.map((note) => <li>{note}</li>)}
+        </ul>
+      </div>
+      <div class="booking-invite">
+        <div class="booking-copy">
+          <h3>Wybierz zajęcia dla siebie</h3>
+          <p class="muted">Pierwsze zajęcia grupowe są bezpłatne.</p>
+          <p class="reformer-note">
+            Reformer umawiamy <a href={studio.smsHref}>SMS-em</a> lub telefonicznie:&nbsp;<a href={studio.phoneHref}>{studio.phone}</a>.
+          </p>
+        </div>
+        <Button href={studio.bookingUrl} variant="light">Grafik zajęć grupowych</Button>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* --- Wstęp: tekst + zdjęcie sali --- */
+  .intro {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 48px 72px;
+    padding-block: clamp(48px, 7vw, 96px) var(--space-section);
+  }
+
+  .intro-text {
+    display: flex;
+    flex: 1 1 400px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+  }
+
+  /* Smaller than the global h1: it shares the row with a photo */
+  .intro-heading {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .section-nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    color: var(--color-text-subtle);
+    font-size: 15px;
+  }
+
+  .section-nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--color-text-muted);
+    text-underline-offset: 4px;
+  }
+
+  .section-nav a:hover,
+  .section-nav a:focus-visible {
+    color: var(--color-accent);
+  }
+
+  .intro-title {
+    font-size: clamp(44px, 5.5vw, 80px);
+  }
+
+  .free {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding-top: 24px;
+    border-top: 1px solid var(--color-border-strong);
+  }
+
+  .free-value {
+    font-family: var(--font-heading);
+    font-size: clamp(48px, 5vw, 64px);
+    line-height: 1;
+    color: var(--color-accent);
+    white-space: nowrap;
+  }
+
+  .free-label {
+    font-size: 17px;
+    line-height: 1.4;
+    color: var(--color-text-strong);
+  }
+
+  .intro-photo {
+    flex: 1 1 360px;
+    max-width: 540px;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: var(--radius-card);
+  }
+
+  /*
+    Stacked below ~880px (portrait tablet, phone), where text and photo no
+    longer fit side by side: a wider, shorter crop across the full width.
+  */
+  @media (max-width: 880px) {
+    .intro-photo {
+      max-width: none;
+      aspect-ratio: 4 / 3;
+    }
+  }
+  /* --- Tydzień --- */
+  .week-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+    padding-block: clamp(72px, 9vw, 112px);
+  }
+
+  .week {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(230px, 100%), 1fr));
+    gap: 16px;
+  }
+
+  .day {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 28px;
+    background: var(--color-card);
+    border-radius: var(--radius-card);
+  }
+
+  .day-head {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 15px;
+  }
+
+  .day-name {
+    font-size: 28px;
+  }
+
+  .slots {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .slot {
+    display: flex;
+    gap: 16px;
+    padding-block: 8px;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .slot-time {
+    flex-shrink: 0;
+    width: 48px;
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+
+  /* --- Opis zajęć --- */
+  .classes {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+    padding-block: var(--space-section);
+  }
+
+  .class-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px 48px;
+    padding-block: 32px;
+    border-top: 1px solid var(--color-border-strong);
+  }
+
+  .class-photo {
+    flex: 0 0 200px;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: var(--radius-card);
+  }
+
+  .class-row:last-child {
+    border-bottom: 1px solid var(--color-border-strong);
+  }
+
+  /*
+    Name and text wrap inside this column, so on a tablet the text stays next
+    to the photo instead of dropping under it.
+  */
+  .class-body {
+    display: flex;
+    flex: 1 1 300px;
+    flex-wrap: wrap;
+    gap: 16px 48px;
+  }
+
+  .class-name {
+    display: flex;
+    flex: 1 1 240px;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 15px;
+  }
+
+  .class-name h3 {
+    margin-bottom: 6px;
+  }
+
+  /* Badge for how a class runs, e.g. one-to-one or in pairs */
+  .format {
+    align-self: flex-start;
+    margin-bottom: 6px;
+    padding: 4px 14px;
+    background: var(--color-panel-green);
+    border-radius: var(--radius-pill);
+    color: var(--color-accent);
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .class-description {
+    display: flex;
+    flex: 2 1 340px;
+    flex-direction: column;
+    gap: 18px;
+    max-width: 640px;
+  }
+
+  /* On a phone the photo goes full width above the text, in a wider crop */
+  @media (max-width: 760px) {
+    .class-photo {
+      flex-basis: 100%;
+      aspect-ratio: 4 / 3;
+    }
+  }
+
+  /* --- Cennik i dobrze wiedzieć --- */
+  .booking-invite {
+    display: flex;
+    flex: 1 1 100%;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px 32px;
+    padding-top: 28px;
+    border-top: 1px solid var(--color-border-strong);
+  }
+
+  .booking-copy {
+    display: flex;
+    flex: 1 1 360px;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .booking-copy h3 {
+    font-size: 26px;
+  }
+
+  .reformer-note {
+    color: var(--color-text-subtle);
+    font-size: 15px;
+  }
+
+  .reformer-note a {
+    display: inline-block;
+    padding-block: 6px;
+    text-underline-offset: 3px;
+  }
+
+  .info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 48px 72px;
+    padding-block: clamp(72px, 9vw, 112px);
+  }
+
+  .info-block {
+    display: flex;
+    flex: 1 1 360px;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .prices {
+    margin: 0;
+    padding: 8px 28px;
+    background: var(--color-card);
+    border-radius: var(--radius-card);
+  }
+
+  .price-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding-block: 14px;
+  }
+
+  .price-row + .price-row {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .price-row dd {
+    margin: 0;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .notes {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0;
+    padding-left: 20px;
+    color: var(--color-text-strong);
+  }
+
+  .notes li::marker {
+    color: var(--color-accent);
+  }
+
+</style>

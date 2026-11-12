@@ -1,0 +1,75 @@
+---
+import { studio } from "../data/studio";
+
+const { address } = studio;
+---
+
+<div class="studio-map">
+  <iframe
+    src={address.mapEmbedUrl}
+    title={`Mapa: ${address.street}, ${address.town}`}
+    tabindex="-1"
+    aria-hidden="true"
+    loading="lazy"></iframe>
+  <a
+    class="map-link"
+    href={studio.googleProfileUrl}
+    aria-label={`Otwórz Bloom Studio by Dayana w Mapach Google: ${address.street}, ${address.town}`}
+  >
+    <span class="map-label">Otwórz w Mapach Google</span>
+  </a>
+</div>
+
+<style>
+  .studio-map {
+    position: relative;
+    width: 100%;
+    min-height: 380px;
+    overflow: hidden;
+    border-radius: var(--radius-card);
+    background: var(--color-photo-map);
+  }
+
+  /* Hide inactive zoom controls while keeping the map attribution visible. */
+  iframe {
+    position: absolute;
+    top: -70px;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: calc(100% + 70px);
+    border: 0;
+    pointer-events: none;
+  }
+
+  /* Open Google Maps instead of capturing scroll gestures on the page. */
+  .map-link {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-start;
+    padding: 16px;
+    text-decoration: none;
+  }
+
+  .map-link:focus-visible {
+    outline-offset: -4px;
+    border-radius: var(--radius-card);
+  }
+
+  .map-label {
+    padding: 10px 18px;
+    background: var(--color-card);
+    border-radius: var(--radius-pill);
+    box-shadow: 0 4px 14px rgb(43 42 39 / 18%);
+    color: var(--color-text);
+    font-size: 15px;
+    font-weight: 700;
+    transition: color 0.25s ease;
+  }
+
+  .map-link:hover .map-label,
+  .map-link:focus-visible .map-label {
+    color: var(--color-accent);
+  }
+</style>

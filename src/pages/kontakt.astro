@@ -1,0 +1,466 @@
+---
+import Base from "../layouts/Base.astro";
+import Button from "../components/Button.astro";
+import FoundationData from "../components/FoundationData.astro";
+import Photo from "../components/Photo.astro";
+import StudioMap from "../components/StudioMap.astro";
+import { studio } from "../data/studio";
+
+// Cut from the studio's own "Lokalizacja" Instagram post, so it is small (610px)
+import buildingPhoto from "../images/budynek-studia.jpg";
+
+const { address, foundation, instagram, facebook } = studio;
+
+// On a phone the address only fits on two lines; break it before the "@"
+const [emailUser, emailDomain] = studio.email.split("@");
+
+const formKey: string | null = studio.contactFormKey;
+---
+
+<Base
+  title="Kontakt i dojazd – Bloom Studio by Dayana"
+  description="Bloom Studio by Dayana, ul. Nowa 22, Szewce (gmina Wisznia Mała). Telefon i SMS 535 223 228, Instagram, e-mail, mapa dojazdu i dane fundacji."
+>
+  <section class="page-head">
+    <h1>Kontakt</h1>
+    <p class="muted lead">
+      Telefon, e-mail i media społecznościowe studia.
+    </p>
+  </section>
+
+  <section class="container contact-block">
+    <div class="column">
+      <div class="section-head">
+        <h2>Dane kontaktowe</h2>
+      </div>
+      <div class="channels">
+        <div class="channel">
+          <div class="channel-info">
+            <span class="channel-label">Telefon i SMS</span>
+            <a class="channel-value phone-value" href={studio.phoneHref}>{studio.phone}</a>
+          </div>
+          <a class="sms-link" href={studio.smsHref}>SMS</a>
+        </div>
+        <a class="channel channel-link" href={instagram.url}>
+          <span class="channel-info">
+            <span class="channel-label">Instagram</span>
+            <span class="channel-value">{instagram.handle}</span>
+          </span>
+        </a>
+        <a class="channel channel-link" href={facebook.url}>
+          <span class="channel-info">
+            <span class="channel-label">Facebook</span>
+            <span class="channel-value">{studio.name}</span>
+          </span>
+        </a>
+        <a class="channel channel-link" href={studio.emailHref}>
+          <span class="channel-info">
+            <span class="channel-label">E-mail</span>
+            <span class="channel-value">
+              {emailUser}<wbr />@{emailDomain}
+            </span>
+          </span>
+        </a>
+      </div>
+    </div>
+
+    {/*
+      Sent to Web3Forms, which e-mails it to the studio. Without JavaScript it
+      is a plain POST and Web3Forms shows its own confirmation page; with it,
+      the script below sends it in place and shows the result under the button.
+    */}
+    <div class="column" id="pytanie">
+      <div class="section-head">
+        <h2>Zadaj pytanie</h2>
+        <p class="muted">Odpowiemy na podany adres e-mail.</p>
+      </div>
+      <form
+        class="ask-form"
+        action="https://api.web3forms.com/submit"
+        method="POST"
+        data-fallback-email={studio.email}
+      >
+        <input type="hidden" name="access_key" value={formKey ?? ""} />
+        <input type="hidden" name="subject" value="Pytanie ze strony Bloom Studio" />
+        <input type="hidden" name="from_name" value="Strona Bloom Studio" />
+        {/* Honeypot: hidden from people, bots fill it in and get dropped */}
+        <input type="checkbox" name="botcheck" class="honeypot" tabindex="-1" autocomplete="off" />
+
+        <div class="field-row">
+          <label class="field">
+            <span>Imię</span>
+            <input type="text" name="name" required autocomplete="given-name" />
+          </label>
+          <label class="field">
+            <span>E-mail</span>
+            <input type="email" name="email" required autocomplete="email" />
+          </label>
+        </div>
+        <label class="field">
+          <span>Telefon <span class="subtle">(nieobowiązkowo)</span></span>
+          <input type="tel" name="phone" autocomplete="tel" />
+        </label>
+        <label class="field">
+          <span>Pytanie</span>
+          <textarea name="message" rows="6" required></textarea>
+        </label>
+
+        <p class="privacy subtle">
+          Administratorem danych jest {foundation.name}. Używamy ich tylko po to, żeby odpowiedzieć
+          na Twoje pytanie. Szczegóły w <a href="/polityka-prywatnosci">polityce prywatności</a>.
+        </p>
+
+        <div class="submit-row">
+          <button type="submit" class="submit" disabled={!formKey}>Wyślij pytanie</button>
+          <p class="status" role="status">
+            {!formKey && "[DO UZUPEŁNIENIA: klucz Web3Forms, bez niego formularz nie wysyła]"}
+          </p>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="container directions">
+      <div class="directions-text">
+        <h2>Jak do nas trafić</h2>
+        <p class="address">
+          {address.street}<br />
+          {address.postcode} {address.town}, {address.municipality}
+        </p>
+        <p class="strong-text">{address.directions}</p>
+        <p class="subtle">Parking: {address.parking}</p>
+        <figure class="building">
+          <div class="building-photo">
+            <Photo
+              src={buildingPhoto}
+              alt="Biały budynek z dwuspadowym dachem przy ul. Nowej 22 w Szewcach, z szyldem IHD Service na ścianie i na ogrodzeniu."
+              sizes="(max-width: 760px) 100vw, 480px"
+              widths={[610]}
+            />
+          </div>
+          <figcaption class="subtle">Tak wygląda budynek od ulicy.</figcaption>
+        </figure>
+        <div class="buttons">
+          <Button href={address.mapsHref}>Wyznacz trasę</Button>
+        </div>
+      </div>
+      <div class="map">
+        <StudioMap />
+      </div>
+    </div>
+  </section>
+
+  <section class="foundation">
+    <h2>Dane fundacji</h2>
+    <p class="muted">
+      Studio prowadzi {foundation.name}. Poniżej adres siedziby fundacji, zajęcia odbywają się w
+      Szewcach.
+    </p>
+    <div class="foundation-data">
+      <FoundationData />
+    </div>
+    <a class="more" href="/fundacja">Więcej o fundacji i klubie</a>
+  </section>
+</Base>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>(".ask-form");
+
+  form?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const button = form.querySelector("button")!;
+    const status = form.querySelector(".status")!;
+
+    button.disabled = true;
+    status.textContent = "Wysyłanie…";
+    try {
+      const response = await fetch(form.action, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(Object.fromEntries(new FormData(form))),
+      });
+      if (!response.ok) throw new Error(String(response.status));
+      form.reset();
+      status.textContent = "Dziękujemy, pytanie dotarło. Odpiszemy na podany adres e-mail.";
+    } catch {
+      status.textContent = `Nie udało się wysłać. Napisz do nas na ${form.dataset.fallbackEmail} albo SMS-em.`;
+    } finally {
+      button.disabled = false;
+    }
+  });
+</script>
+
+<style>
+  /* --- Sposoby kontaktu --- */
+  /*
+    Contact details on the left, the question form on the right; stacked
+    once the two no longer fit side by side (portrait tablet, phone).
+  */
+  .contact-block {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 56px;
+    padding-bottom: var(--space-section);
+  }
+
+  .column {
+    display: flex;
+    flex: 1 1 380px;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 0;
+  }
+
+  .column + .column {
+    flex: 1.25 1 440px;
+  }
+
+  .contact-block h2 {
+    font-size: clamp(28px, 3vw, 38px);
+  }
+
+  /* The list keeps its own height beside the longer question form. */
+  .channels {
+    display: flex;
+    flex-direction: column;
+    padding: 8px clamp(20px, 3vw, 28px);
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+  }
+
+  .channel {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px 16px;
+    min-width: 0;
+    min-height: var(--touch-target);
+    padding-block: 16px;
+  }
+
+  .channel + .channel {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .channel-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .channel-label {
+    color: var(--color-text-subtle);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .channel-value {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.5;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+  }
+
+  .phone-value {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: 24px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .channel-link {
+    text-decoration: none;
+  }
+
+  .channel-link:hover .channel-value,
+  .channel-link:focus-visible .channel-value,
+  .phone-value:hover,
+  .phone-value:focus-visible {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .sms-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    color: var(--color-text-muted);
+    font-size: 14px;
+    font-weight: 500;
+    text-underline-offset: 4px;
+  }
+
+  /* --- Zadaj pytanie --- */
+  .ask-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: clamp(24px, 4vw, 40px);
+    background: var(--color-card);
+    border-radius: var(--radius-card);
+  }
+
+  .field-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .field-row .field {
+    flex: 1 1 200px;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  .field input,
+  .field textarea {
+    width: 100%;
+    min-height: var(--touch-target);
+    padding: 12px 16px;
+    background: var(--color-card);
+    border: 1px solid var(--color-field-border);
+    border-radius: var(--radius-card);
+    color: var(--color-text);
+    font: inherit;
+    font-weight: 400;
+  }
+
+  .field textarea {
+    resize: vertical;
+  }
+
+  .honeypot {
+    display: none;
+  }
+
+  .privacy {
+    font-size: 14px;
+  }
+
+  .submit-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 20px;
+  }
+
+  .submit {
+    min-height: var(--touch-target);
+    padding: 0 30px;
+    background: var(--color-accent);
+    border: 0;
+    border-radius: var(--radius-pill);
+    color: #fff;
+    font: inherit;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+  }
+
+  .submit:hover:not(:disabled) {
+    background: #3f5844;
+  }
+
+  .submit:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  .status {
+    flex: 1 1 200px;
+    font-size: 15px;
+  }
+
+  /* --- Dojazd --- */
+  .directions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: 40px 72px;
+    padding-block: var(--space-section);
+  }
+
+  .directions-text {
+    display: flex;
+    flex: 1 1 320px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  .address {
+    font-size: 19px;
+  }
+
+  .building {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 480px;
+    margin: 0;
+    font-size: 14px;
+  }
+
+  .building-photo {
+    aspect-ratio: 610 / 480;
+    overflow: hidden;
+    border-radius: var(--radius-card);
+  }
+
+  .map {
+    display: grid;
+    flex: 1.4 1 420px;
+    min-height: 420px;
+  }
+
+  /* --- Fundacja --- */
+  .foundation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    max-width: 720px;
+    margin-inline: auto;
+    padding: var(--space-section) var(--space-inline);
+    text-align: center;
+  }
+
+  .foundation-data {
+    width: 100%;
+    margin-top: 16px;
+  }
+
+  .more {
+    margin-top: 8px;
+    font-weight: 700;
+  }
+
+  @media (max-width: 760px) {
+    .channels {
+      padding-inline: 20px;
+    }
+
+    .map {
+      min-height: 320px;
+    }
+  }
+</style>

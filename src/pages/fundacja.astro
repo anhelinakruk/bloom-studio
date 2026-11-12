@@ -1,0 +1,203 @@
+---
+import Base from "../layouts/Base.astro";
+import Button from "../components/Button.astro";
+import FoundationData from "../components/FoundationData.astro";
+import Photo from "../components/Photo.astro";
+import PhotoPlaceholder from "../components/PhotoPlaceholder.astro";
+import { studio } from "../data/studio";
+
+import teamPhoto from "../images/dayana-i-basia-3.jpg";
+
+const { foundation } = studio;
+
+// The foundation's goals as registered in KRS, in plain words
+const goals = ["zajęcia i warsztaty", "obozy i półkolonie", "prowadzenie klubu sportowego"];
+---
+
+<Base
+  title="Fundacja i klub sportowy – Bloom Studio by Dayana"
+  description="Bloom Studio w Szewcach prowadzi Fundacja Bloom Studio by Dayana. Cele fundacji, klub sportowy, wyjazdy i dane rejestrowe."
+>
+  <section class="page-head">
+    <h1>Fundacja i&nbsp;klub sportowy</h1>
+    <p class="muted lead">
+      Studio w Szewcach prowadzi {foundation.name}, a Bloom działa jako klub sportowy.
+    </p>
+  </section>
+
+  <section class="split panel">
+    <div class="split-photo">
+      <Photo
+        src={teamPhoto}
+        alt="Dwie instruktorki Bloom Studio razem na sali, przed zieloną ścianą."
+        sizes="(max-width: 760px) 100vw, 50vw"
+        position="50% 40%"
+      />
+    </div>
+    <div class="split-text">
+      <h2>Po co jest fundacja</h2>
+      <p class="strong-text">
+        [DO UZUPEŁNIENIA: misja fundacji w 2–3 zdaniach od Dayany, w pierwszej osobie]
+      </p>
+      <p class="strong-text">
+        Fundacja chce, żeby ruch, zwłaszcza taniec i pilates, był na co dzień dostępny dla
+        dzieci, młodzieży i dorosłych. Zajmuje się tym przez:
+      </p>
+      <ul class="goals">
+        {goals.map((goal) => <li>{goal}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="club">
+    <h2>Klub sportowy</h2>
+    <p class="muted">
+      [DO UZUPEŁNIENIA: czym jest klub, kto może do niego należeć, czy są składki, zawody
+      albo pokazy]
+    </p>
+    <Button href="/zajecia" variant="light">Zobacz zajęcia i cennik</Button>
+  </section>
+
+  <section class="container camp-wrap">
+    <div class="camp">
+      <div class="camp-text">
+        <h2>Wyjazdy</h2>
+        <p class="camp-when"><strong>Pilates &amp; Barre Camp, 18–20 września 2026</strong></p>
+        <p class="strong-text">
+          Trzy dni w Pałacu Jugowice, z widokiem na zamek Grodno: codzienny pilates, barre,
+          stretching i mobility, relaksacja, sauna i wieczorne ognisko. Uczestniczki nocowały w
+          pokojach dwuosobowych, a posiłki były na miejscu.
+        </p>
+        <div class="buttons">
+          <Button href={studio.instagram.url} variant="light">Zdjęcia na Instagramie</Button>
+        </div>
+      </div>
+      <div class="camp-photo">
+        <PhotoPlaceholder caption="Zdjęcie: Pilates & Barre Camp" tone="light" />
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="registry">
+      <h2>Dane fundacji</h2>
+      <p class="muted">
+        Fundacja jest wpisana do KRS od {foundation.registered}. Poniżej adres siedziby,
+        zajęcia odbywają się w Szewcach.
+      </p>
+      <div class="registry-data">
+        <FoundationData />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* --- Po co jest fundacja --- */
+  .split {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .split-photo {
+    position: relative;
+    flex: 1 1 480px;
+    min-height: 460px;
+  }
+
+  /* Fills the space next to the text instead of setting the height itself */
+  .split-photo :global(.photo-fill) {
+    position: absolute;
+    inset: 0;
+  }
+
+  .split-text {
+    display: flex;
+    flex: 1 1 480px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 18px;
+    padding: clamp(48px, 6vw, 96px) clamp(24px, 6vw, 96px);
+  }
+
+  .goals {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0;
+    padding-left: 20px;
+    color: var(--color-text-strong);
+  }
+
+  .goals li::marker {
+    color: var(--color-accent);
+  }
+
+  /* --- Klub --- */
+  .club {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    max-width: 720px;
+    margin-inline: auto;
+    padding: var(--space-section) var(--space-inline) 0;
+    text-align: center;
+  }
+
+  /* --- Wyjazdy --- */
+  .camp-wrap {
+    padding-block: var(--space-section);
+  }
+
+  .camp {
+    display: flex;
+    flex-wrap: wrap;
+    overflow: hidden;
+    border-radius: var(--radius-card);
+  }
+
+  .camp-text {
+    display: flex;
+    flex: 1 1 420px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 14px;
+    padding: clamp(24px, 5vw, 72px);
+    background: var(--color-card);
+  }
+
+  .camp-when {
+    font-size: 18px;
+  }
+
+  .camp-photo {
+    display: grid;
+    flex: 1 1 420px;
+    min-height: 360px;
+  }
+
+  /* Stacked on a phone: a lower photo slot under the text */
+  @media (max-width: 760px) {
+    .camp-photo {
+      min-height: 240px;
+    }
+  }
+
+  /* --- Dane fundacji --- */
+  .registry {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    max-width: 720px;
+    margin-inline: auto;
+    padding: var(--space-section) var(--space-inline);
+    text-align: center;
+  }
+
+  .registry-data {
+    width: 100%;
+    margin-top: 16px;
+  }
+</style>

@@ -1,0 +1,59 @@
+---
+import { studio } from "../data/studio";
+
+/** The foundation's registry details, on the contact and foundation pages */
+const { foundation } = studio;
+---
+
+<dl class="data">
+  <div class="row">
+    <dt>Nazwa</dt>
+    <dd>{foundation.name}</dd>
+  </div>
+  <div class="row">
+    <dt>Siedziba</dt>
+    <dd>{foundation.address}</dd>
+  </div>
+  <div class="row">
+    <dt>KRS</dt>
+    <dd>{foundation.krs}</dd>
+  </div>
+  <div class="row">
+    <dt>REGON</dt>
+    <dd>{foundation.regon}</dd>
+  </div>
+  <div class="row">
+    <dt>NIP</dt>
+    <dd>{foundation.nip ?? "[DO UZUPEŁNIENIA]"}</dd>
+  </div>
+</dl>
+
+<style>
+  .data {
+    width: 100%;
+    margin: 0;
+    text-align: left;
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 24px;
+    padding-block: 12px;
+    border-top: 1px solid var(--color-border-strong);
+  }
+
+  .row:last-child {
+    border-bottom: 1px solid var(--color-border-strong);
+  }
+
+  dt {
+    flex: 0 0 120px;
+    color: var(--color-text-subtle);
+  }
+
+  dd {
+    flex: 1 1 240px;
+    margin: 0;
+  }
+</style>

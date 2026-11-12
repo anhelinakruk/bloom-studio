@@ -1,0 +1,53 @@
+---
+import type { ClassItem } from "../data/classes";
+
+interface Props {
+  item: ClassItem;
+}
+
+const { item } = Astro.props;
+---
+
+<article class="card">
+  <h3>{item.name}</h3>
+  {item.format && <span class="format">{item.format}</span>}
+  <div class="meta">
+    {item.when && <span>Kiedy: {item.when}</span>}
+    {item.who && <span>{item.who}</span>}
+    {item.duration && <span>Czas trwania: {item.duration}</span>}
+  </div>
+  <p class="description">{item.text}</p>
+</article>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 28px;
+    background: var(--color-card);
+    border-radius: var(--radius-card);
+  }
+
+  .format {
+    align-self: flex-start;
+    padding: 4px 14px;
+    background: var(--color-panel-green);
+    border-radius: var(--radius-pill);
+    color: var(--color-accent);
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .meta {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 15px;
+    color: var(--color-text-subtle);
+  }
+
+  .description {
+    color: var(--color-text-strong);
+  }
+</style>

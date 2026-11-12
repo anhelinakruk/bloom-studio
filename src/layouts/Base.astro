@@ -1,0 +1,44 @@
+---
+import "../styles/global.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import MobileBar from "../components/MobileBar.astro";
+import { studio } from "../data/studio";
+
+interface Props {
+  title: string;
+  description: string;
+  /** Header sits transparent over the page's first photo until scrolled */
+  overlayHeader?: boolean;
+}
+
+const { title, description, overlayHeader = false } = Astro.props;
+
+const FONTS_URL =
+  "https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,500;1,400&family=Karla:wght@400;500;700&display=swap";
+---
+
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {!studio.allowSearchEngines && <meta name="robots" content="noindex, nofollow" />}
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <!-- crossorigin is required here, otherwise the font files are fetched twice -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href={FONTS_URL} />
+  </head>
+
+  <body>
+    <Header overlay={overlayHeader} />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+    <MobileBar />
+  </body>
+</html>

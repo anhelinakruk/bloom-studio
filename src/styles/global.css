@@ -1,0 +1,207 @@
+/*
+  Global styles: reset, typography, and the few helpers used on every page.
+  Anything specific to one component stays in that component's .astro file.
+*/
+
+@import "./tokens.css";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Menu links jump to sections; keep their headings clear of the sticky header */
+html {
+  scroll-padding-top: var(--header-height);
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Brief: headings and logo in normal weight and normal letter case */
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 400;
+}
+
+h1 {
+  font-size: var(--text-h1);
+  line-height: 1;
+}
+
+h2 {
+  font-size: var(--text-h2);
+  line-height: 1.15;
+}
+
+h3 {
+  font-size: var(--text-h3);
+  line-height: 1.15;
+}
+
+/* Even line lengths, so a heading never ends on a lone word */
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+/* pretty: the browser avoids leaving a single word on a paragraph's last line */
+p,
+li,
+dd {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+/*
+  Centred blocks (and the short role lines under names) read best with lines
+  of even length, so their last line isn't one or two words.
+*/
+:where(.page-head, .intro, .foundation, .invite, .registry, .club, .fact) p,
+.teacher-role {
+  text-wrap: balance;
+}
+
+a {
+  color: var(--color-text);
+}
+
+a:hover {
+  color: var(--color-accent);
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/*
+  Used by Photo.astro to fill a slot the parent has sized. It lives here
+  rather than in the component because Astro's scoped styles cannot reach
+  the <img> that the built-in <Image> component renders.
+*/
+.photo-fill {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/*
+  The mockup had no visible focus state at all, which makes the page
+  unusable with a keyboard. :focus-visible keeps it off mouse clicks.
+*/
+:where(a, button, input, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* FAQ rows draw their own "+" marker instead of the default triangle */
+summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--width-page);
+  margin-inline: auto;
+  padding-inline: var(--space-inline);
+}
+
+/* Helpers shared by the page templates */
+.muted {
+  color: var(--color-text-muted);
+}
+
+.subtle {
+  color: var(--color-text-subtle);
+}
+
+.strong-text {
+  color: var(--color-text-strong);
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.panel {
+  background: var(--color-panel);
+}
+
+.section-head {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 680px;
+}
+
+/* Centred title block at the top of a subpage */
+.page-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  max-width: var(--width-text);
+  margin-inline: auto;
+  padding: var(--space-section) var(--space-inline);
+  text-align: center;
+}
+
+.lead {
+  max-width: 560px;
+  font-size: 19px;
+  text-wrap: balance;
+}
+
+/*
+  One breakpoint for the whole site: below 760px the layout switches to the
+  phone version (collapsible menu, sticky bottom bar). Media queries cannot
+  read custom properties, so the value is written out here and nowhere else.
+
+  Astro's scoped component styles carry higher specificity than a plain class,
+  so these two need !important to actually win against a component's own
+  `display`. Hiding is the entire job of these classes, so that is fine here.
+*/
+@media (min-width: 761px) {
+  .mobile-only {
+    display: none !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .desktop-only {
+    display: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
