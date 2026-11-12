@@ -1,4 +1,5 @@
 ---
+import { link } from "../data/link";
 import Base from "../layouts/Base.astro";
 import Button from "../components/Button.astro";
 import FoundationData from "../components/FoundationData.astro";
@@ -107,7 +108,7 @@ const formKey: string | null = studio.contactFormKey;
 
         <p class="privacy subtle">
           Administratorem danych jest {foundation.name}. Używamy ich tylko po to, żeby odpowiedzieć
-          na Twoje pytanie. Szczegóły w <a href="/polityka-prywatnosci">polityce prywatności</a>.
+          na Twoje pytanie. Szczegóły w <a href={link("/polityka-prywatnosci")}>polityce prywatności</a>.
         </p>
 
         <div class="submit-row">
@@ -160,7 +161,7 @@ const formKey: string | null = studio.contactFormKey;
     <div class="foundation-data">
       <FoundationData />
     </div>
-    <a class="more" href="/fundacja">Więcej o fundacji i klubie</a>
+    <a class="more" href={link("/fundacja")}>Więcej o fundacji i klubie</a>
   </section>
 </Base>
 

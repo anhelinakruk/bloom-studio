@@ -1,4 +1,5 @@
 ---
+import { link, pagePath } from "../data/link";
 import { studio } from "../data/studio";
 import { navLinks, navMenu } from "../data/nav";
 import Button from "./Button.astro";
@@ -10,13 +11,13 @@ interface Props {
 const { overlay = false } = Astro.props;
 
 // The built site may serve a page as "/zajecia/", so the trailing slash is ignored
-const path = Astro.url.pathname.replace(/\/$/, "");
+const path = pagePath(Astro.url.pathname);
 const current = (href: string) => (path === href ? "page" : undefined);
 ---
 
 <header class="header">
   <div class="container top-bar">
-    <a href="/" class="logo">
+    <a href={link("/")} class="logo">
       <span class="logo-name">BLOOM</span>
       <span class="logo-tagline">studio by Dayana</span>
     </a>
@@ -49,14 +50,14 @@ const current = (href: string) => (path === href ? "page" : undefined);
               </summary>
               <div class="panel dropdown-panel">
                 {item.children.map(({ href, label }) => (
-                  <a class="menu-link" href={href} aria-current={current(href)}>
+                  <a class="menu-link" href={link(href)} aria-current={current(href)}>
                     {label}
                   </a>
                 ))}
               </div>
             </details>
           ) : (
-            <a class="nav-link" href={item.href} aria-current={current(item.href)}>
+            <a class="nav-link" href={link(item.href)} aria-current={current(item.href)}>
               {item.label}
             </a>
           ),
@@ -110,7 +111,7 @@ const current = (href: string) => (path === href ? "page" : undefined);
         <nav class="panel menu-panel" aria-label="Menu główne">
           {
             navLinks.map(({ href, label }) => (
-              <a class="menu-link" href={href} aria-current={current(href)}>
+              <a class="menu-link" href={link(href)} aria-current={current(href)}>
                 {label}
               </a>
             ))

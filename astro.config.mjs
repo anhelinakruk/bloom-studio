@@ -1,7 +1,11 @@
 // @ts-check
 import { defineConfig } from "astro/config";
 
-// The site is served from the domain root on Cloudflare Pages, so no `base`.
-// `site` (for canonical URLs and the sitemap) is added in step 10, once the
-// final address is known.
-export default defineConfig({});
+// Draft hosting on GitHub Pages: the site lives at
+// https://anhelinakruk.github.io/bloom-studio/, hence the `base`. Internal
+// links go through link() in src/data/link.ts, so on the final domain only
+// these two lines change (site → the domain, base → "/").
+export default defineConfig({
+  site: "https://anhelinakruk.github.io",
+  base: "/bloom-studio",
+});

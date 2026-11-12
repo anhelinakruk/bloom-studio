@@ -1,4 +1,5 @@
 ---
+import { link } from "../data/link";
 import type { NewsItem } from "../data/news";
 import { studio } from "../data/studio";
 import Button from "./Button.astro";
@@ -16,7 +17,7 @@ interface Props {
 const { item, level = 3 } = Astro.props;
 const Heading = level === 2 ? "h2" : "h3";
 const href = item.action.kind === "link"
-  ? item.action.href
+  ? link(item.action.href)
   : item.action.kind === "sms" ? studio.smsHref : studio.phoneHref;
 ---
 

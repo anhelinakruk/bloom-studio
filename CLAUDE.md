@@ -102,6 +102,13 @@ Plik `bloom-strona-glowna.html` to wzór 1:1. Kolejność sekcji:
 9. Do sprawdzenia po zalogowaniu: klient nie widzi cudzych danych, nie da się samemu nadać roli Administrator, studio dostaje powiadomienie o zgłoszeniu. Uruchomić skan bezpieczeństwa w Lovable.
 10. Miły dodatek na później: lista rezerwowa przy pełnych zajęciach.
 
+## Hosting (stan na 12.11.2026)
+
+- Wersja robocza: GitHub Pages, repozytorium `anhelinakruk/bloom-studio`, adres https://anhelinakruk.github.io/bloom-studio/. Publikuje się sama po każdym wysłaniu na `main` (`.github/workflows/deploy.yml`).
+- Strona jest pod podkatalogiem, dlatego `base: "/bloom-studio"` w `astro.config.mjs`, a wszystkie wewnętrzne linki idą przez `link()` z `src/data/link.ts`. Nowe linki też muszą przez nią iść.
+- Google zablokowane (`allowSearchEngines: false` w `src/data/studio.ts`) do czasu publikacji na docelowej domenie.
+- Przy przejściu na własną domenę: w `astro.config.mjs` zmienić `site` na domenę i `base` na `"/"`, włączyć `allowSearchEngines`.
+
 ## Plan pracy (budżet 600 zł)
 
 1. Brief i styl, menu, stopka, hero

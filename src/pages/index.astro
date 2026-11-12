@@ -1,4 +1,5 @@
 ---
+import { link } from "../data/link";
 import Base from "../layouts/Base.astro";
 import Button from "../components/Button.astro";
 import ClassCard from "../components/ClassCard.astro";
@@ -78,7 +79,7 @@ const featuredClasses = classes.filter(({ id }) =>
       </p>
       <div class="buttons">
         <Button href={studio.bookingUrl}>Zobacz grafik</Button>
-        <Button href="/zajecia" variant="outline">Zajęcia i cennik</Button>
+        <Button href={link("/zajecia")} variant="outline">Zajęcia i cennik</Button>
       </div>
     </div>
   </section>
@@ -146,7 +147,7 @@ const featuredClasses = classes.filter(({ id }) =>
     </div>
 
     <div>
-      <Button href="/zajecia" variant="light">Wszystkie zajęcia i cennik</Button>
+      <Button href={link("/zajecia")} variant="light">Wszystkie zajęcia i cennik</Button>
     </div>
   </section>
 
@@ -158,7 +159,7 @@ const featuredClasses = classes.filter(({ id }) =>
         <p class="strong-text">{pregnancyPilates.text}</p>
       </div>
       <div>
-        <Button href={`/zajecia#${pregnancyPilates.id}`}>O zajęciach</Button>
+        <Button href={link(`/zajecia#${pregnancyPilates.id}`)}>O zajęciach</Button>
       </div>
     </article>
   </section>
@@ -238,7 +239,7 @@ const featuredClasses = classes.filter(({ id }) =>
       </article>
     </div>
     <div>
-      <a class="bold-link" href="/instruktorki">Więcej o instruktorkach</a>
+      <a class="bold-link" href={link("/instruktorki")}>Więcej o instruktorkach</a>
     </div>
   </section>
 
@@ -299,7 +300,7 @@ const featuredClasses = classes.filter(({ id }) =>
       Studio prowadzi {foundation.name}, a Bloom działa jako klub sportowy. Chcemy zachęcać
       dzieci, młodzież i dorosłych do ruchu na zajęciach, warsztatach i wspólnych wyjazdach.
     </p>
-    <a class="bold-link" href="/fundacja">Więcej o fundacji</a>
+    <a class="bold-link" href={link("/fundacja")}>Więcej o fundacji</a>
   </section>
 
   {/* 10. PYTANIA */}
@@ -326,7 +327,7 @@ const featuredClasses = classes.filter(({ id }) =>
       </div>
       <div class="faq-contact">
         <h3>Masz inne pytanie?</h3>
-        <Button href="/kontakt#pytanie" variant="light">Zadaj pytanie</Button>
+        <Button href={link("/kontakt#pytanie")} variant="light">Zadaj pytanie</Button>
       </div>
     </div>
   </section>

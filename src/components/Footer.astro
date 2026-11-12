@@ -1,4 +1,5 @@
 ---
+import { link } from "../data/link";
 import { studio } from "../data/studio";
 import { navLinks } from "../data/nav";
 
@@ -19,7 +20,7 @@ const year = new Date().getFullYear();
     </div>
 
     <nav class="column pages" aria-label="Strony">
-      {navLinks.map(({ href, label }) => <a class="page-link" href={href}>{label}</a>)}
+      {navLinks.map(({ href, label }) => <a class="page-link" href={link(href)}>{label}</a>)}
     </nav>
 
     <div class="column legal">
@@ -70,7 +71,7 @@ const year = new Date().getFullYear();
   */}
   <div class="container bottom">
     <span>&copy; {year} {studio.name}</span>
-    <a href="/polityka-prywatnosci">Polityka prywatności</a>
+    <a href={link("/polityka-prywatnosci")}>Polityka prywatności</a>
   </div>
 </footer>
 

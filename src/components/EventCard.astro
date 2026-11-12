@@ -1,4 +1,5 @@
 ---
+import { link } from "../data/link";
 import type { EventDate, NewsItem } from "../data/news";
 import { studio } from "../data/studio";
 import Button from "./Button.astro";
@@ -58,7 +59,7 @@ const { date } = item;
       </dl>
       {preview ? (
         <div>
-          <a class="details-link" href="/aktualnosci#najblizsze-wydarzenie">Szczegóły wydarzenia</a>
+          <a class="details-link" href={link("/aktualnosci#najblizsze-wydarzenie")}>Szczegóły wydarzenia</a>
         </div>
       ) : (
         <>
