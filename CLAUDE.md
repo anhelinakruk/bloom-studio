@@ -2,15 +2,14 @@
 
 Kontekst projektu przeniesiony z rozmowy w claude.ai (9–10.11.2026). Czytaj ten plik przed każdą pracą nad stroną.
 
-## Kim jestem i jak pracujemy
+## Jak pracujemy
 
-- Robię stronę dla klientki (Dayana Radzimowska). Nie piszę kodu, kieruję AI.
-- Budżet: 600 zł, czyli 6–10 godzin mojej pracy. Liczy się to, co da się realnie skończyć.
-- Komunikacja ze mną: po polsku, prosto, bez żargonu.
+- Strona dla Bloom Studio by Dayana (Dayana Radzimowska).
+- Komunikacja: po polsku, prosto, bez żargonu.
 
-## Najważniejsza zasada: strona ma wyglądać „po ludzku”, nie jak z AI
+## Najważniejsza zasada: strona ma brzmieć i wyglądać naturalnie
 
-Klienci odbierają strony „AI-owe” jako tanie. Dlatego:
+Szablonowe, przesłodzone strony wyglądają tanio. Dlatego:
 
 - Proste bloki i sekcje: jedna myśl, jeden nagłówek, krótki tekst, jeden przycisk.
 - Konkrety zamiast haseł („najwyżej sześć osób”, „pierwszy budynek, sala na pierwszym piętrze”, „termin ustalamy SMS-em”).
@@ -35,8 +34,8 @@ Klienci odbierają strony „AI-owe” jako tanie. Dlatego:
 - Indywidualne treningi pilatesu dla kobiet w ciąży: nowa oferta z posta na Facebooku przesłanego przez użytkowniczkę 12.11.2026. Szczegóły przez kontakt ze studiem. Cena, terminy, prowadząca i sprzęt (mata/reformer) nie zostały podane, nie dopisujemy ich. Informacja jest na stronie głównej, w ofercie zajęć i w aktualnościach.
 - Rodzice mogą ćwiczyć na sprzęcie, gdy dziecko ma taniec.
 - Eventy: Pilates i relaksacja przy świecach, pt. 27.11.2026, 19:00–20:30, 100 zł, zapisy tel./SMS. We wrześniu był Pilates & Barre Camp (18–20.09.2026, pt.–nd.): Pałac Jugowice z widokiem na zamek Grodno; codzienny pilates, barre, stretching i mobility, relaksacja, sauna, wieczorne ognisko; pokoje 2-osobowe z klimatyzacją, śniadania, lunch, kolacja, przerwy kawowe, upominek dla uczestniczek, dojazd we własnym zakresie (z posta z 8 maja). 31.07.2026 (pt.), 16:00–19:00: Pilates i malowanie przy winie w ogrodzie studia, 150 zł. Nowość z Instagrama: zajęcia na reformerze w duecie (zapisy tel. 535 223 228). Wszystko to jest w `src/data/news.ts` (aktualności + poprzednie wydarzenia).
-- Prawdziwa opinia z Google, pełny polski oryginał (poprawiona tylko spacja przed przecinkiem): „Pierwszy raz na pilatesie, więc nie do końca wiedziałam czego się spodziewać. Okazało się, że zajęcia prowadzone są w bardzo kameralnej atmosferze z bardzo miłą prowadzącą Dayną, która pomaga i tłumaczy dokładnie, aby prawidłowo wykonywać wszystkie ćwiczenia. Polecam dla ciała i ducha.” Autorka: Katarzyna Pikulska, 5 gwiazdek, ok. rok temu. Na stronie „Katarzyna P.”, zgoda autorki do potwierdzenia.
-- Pozostałe opinie z Google (wszystkie 5 gwiazdek, teksty w `src/data/reviews.ts`, bez emoji): Agnieszka Sulawa, Kasandra Sala, Magdalena Stachowicz, Ola Gulczyńska, Marta Rogowiec. Na stronie imię + inicjał. Wizytówka Google: ocena 5,0, 29 opinii (stan 11.11.2026), link `https://www.google.com/maps?cid=12910891992771233045`.
+- Prawdziwa opinia z Google, pełny polski oryginał (poprawiona tylko spacja przed przecinkiem): „Pierwszy raz na pilatesie, więc nie do końca wiedziałam czego się spodziewać. Okazało się, że zajęcia prowadzone są w bardzo kameralnej atmosferze z bardzo miłą prowadzącą Dayną, która pomaga i tłumaczy dokładnie, aby prawidłowo wykonywać wszystkie ćwiczenia. Polecam dla ciała i ducha.” Autorka: Katarzyna P., 5 gwiazdek, ok. rok temu. Na stronie „Katarzyna P.”, zgoda autorki do potwierdzenia.
+- Pozostałe opinie z Google (wszystkie 5 gwiazdek, teksty w `src/data/reviews.ts`, bez emoji): Agnieszka S., Kasandra S., Magdalena S., Ola G., Marta R. Na stronie zawsze imię + inicjał, nigdy pełne nazwisko. Wizytówka Google: ocena 5,0, 29 opinii (stan 11.11.2026), link `https://www.google.com/maps?cid=12910891992771233045`.
 - Styl marki: kremowo-beżowy, szałwiowa zieleń (zielona ściana z okrągłym logo BLOOM w sali), szeryfowe logo, rysunki orchidei w postach.
 
 ### Grafik (z aplikacji, stan na 9.11.2026)
@@ -99,8 +98,7 @@ Plik `bloom-strona-glowna.html` to wzór 1:1. Kolejność sekcji:
 6. Data w okienku zapisu „2026-11-09” → „pon., 9 listopada”.
 7. Etykieta „Stretching” przy Treningu Spokojnego Umysłu do poprawy.
 8. Stopka z linkiem do strony, kontaktem i polityką prywatności. Znaczek „Edit with Lovable” znika na płatnym planie.
-9. Do sprawdzenia po zalogowaniu: klient nie widzi cudzych danych, nie da się samemu nadać roli Administrator, studio dostaje powiadomienie o zgłoszeniu. Uruchomić skan bezpieczeństwa w Lovable.
-10. Miły dodatek na później: lista rezerwowa przy pełnych zajęciach.
+9. Miły dodatek na później: lista rezerwowa przy pełnych zajęciach.
 
 ## Hosting (stan na 12.11.2026)
 
@@ -109,7 +107,7 @@ Plik `bloom-strona-glowna.html` to wzór 1:1. Kolejność sekcji:
 - Google zablokowane (`allowSearchEngines: false` w `src/data/studio.ts`) do czasu publikacji na docelowej domenie.
 - Przy przejściu na własną domenę: w `astro.config.mjs` zmienić `site` na domenę i `base` na `"/"`, włączyć `allowSearchEngines`.
 
-## Plan pracy (budżet 600 zł)
+## Plan pracy
 
 1. Brief i styl, menu, stopka, hero
 2. Reszta strony głównej
@@ -122,7 +120,7 @@ Plik `bloom-strona-glowna.html` to wzór 1:1. Kolejność sekcji:
 9. Testy na telefonie, SEO („pilates Szewce”, „barre Wrocław”), publikacja
 10. Bufor na jedną rundę poprawek
 
-Poza budżetem: płatności online, karnety w aplikacji, panel do edycji aktualności, lista rezerwowa, abonament Lovable i domena (płaci klientka, domena na fundację).
+Poza zakresem: płatności online, karnety w aplikacji, panel do edycji aktualności, lista rezerwowa. Domena będzie zarejestrowana na fundację.
 
 ## Czego jeszcze brakuje od Dayany
 
